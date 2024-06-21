@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+  <script src="js/modules/break_eternity.js"></script>
+  <script src="js/modules/format.js"></script>
+  <div id="currency">Nolan's Button Simulator v0.0 alpha</div>
+  <div class="menu-wrapper">
+    <button id="menu-button" onclick="changemenu(1)">Main</button>
+    <button id="menu-button" onclick="changemenu(2)"><text-style text = "ascension">Ascension</text-style></button>
+    <button id="menu-button" onclick="changemenu(3)">Options</button>
+  </div>
+  <div id = "main">
+  <currency>
+    <div id="currency-container">
+
+        <!-- Currencies will be added here -->
+    </div>
+ 
+
+  </currency>
+  <div id = "button-container"></div>
+  <div id = "rebirth-container"></div>
+  <div id = "ultrarebirth-container"></div>
+  <div id = "prestige-container"></div>
+  <div id = "ultraprestige-container"></div>
+  <div id = "special-container">
+    <div id = "sb0">
+      <button id = "special-button" onclick = "getfree(0)"><text-style text = "ultrarebirth">1+</text-style> Ultra Rebirth. get <text-style text = "multiplier">100x</text-style> free multiplier!</button>
+  </div>
+    </div>
+    
+
+  <button id = "rank-button" onclick="upgradeRank()"></button>
+  </div>
+  <div id = "ascension">
+    <div id = "ascensioncount">You have <text-style text = "ascension">50</text-style> ascensions</div>
+    <div id = "ascensionpow">You have <text-style text = "ascension">123.4Dc</text-style> ascension power</div>
+    <div id = "ascensiontg">You would get <text-style text = "ascension">999Vec</text-style> ascensions</div>
+    <div id = "currency">At a higher rank, you can ascend all your stats for ascensions, 
+      for x = ascension amount, they give 100x cash, 50x multiplier, 25x rebirths, 12.5x ultra rebirths, 5x prestiges, and 2x ultra prestiges</div>
+
+  </div>
+
+  <script>
+    let options = {
+      notation: "sc",
+      max_range: 6
+    }
+    const el = id => document.getElementById(id);
+
+    let currencies = [
+      {
+        name: 'cash',
+        value: new Decimal(0),
+        multipliers: [
+          new Decimal(1),
+          new Decimal(1)
+
+        ],
+ 
+      },
+      {
+        name: 'multiplier',
+        value: new Decimal(0),
+        multipliers: [
+          new Decimal(1)
+        ],
+      },
+      {
+        name: 'rebirth',
+        value: new Decimal(0),
+        multipliers: [
+          new Decimal(1)
+        ],
+      },
+      {
+        name: 'ultrarebirth',
+        value: new Decimal(0),
+        multipliers: [
+          new Decimal(1)
+        ],
+      },
+      {
+        name: 'prestige',
+        value: new Decimal(0),
+        multipliers: [
+          new Decimal(1)
+        ],
+      },
+      {
+        name: 'ultraprestige',
+        value: new Decimal(0),
+        multipliers: [
+          new Decimal(1)
+        ],
+      }
+    ];
+    let layers = [
+      {
+        name: 'ascension',
+        value: new Decimal(0),
+        power: new Decimal(0),
+        multipliers: [
+          new Decimal(1)
+        ],
+      }
+    ]
+    function reset() {
+      for (let i = currencies.length - 1; i >= 0; i--) {
+    currencies[i].value = new Decimal(0);
+    currencies[0].value = new Decimal(0);
+
+}
+
+    }
+let rank = 0;
+let menu = 1;
+function changemenu(n) {
+  menu = n;
+}
+    let currencyDivs = [];
+    let buttons = [[],[],[],[],[]];
+    let buttonamounts = [10, 10, 10, 10, 10];
+    let basecosts = [new Decimal(10), new Decimal(100), new Decimal(1000), new Decimal(10000), new Decimal(100000)];
+    let basegains = [new Decimal(2.5), new Decimal(1.5), new Decimal(1.5), new Decimal(1.5), new Decimal(1.5)];
+    setInterval(function() {
+ basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1)))];
+
+    }, 50);
+
+    let rankcost = [[new Decimal(250000), 0],[new Decimal(1e14), 0],[new Decimal(1e28), 0],[new Decimal(1e50), 0],[new Decimal(1e75), 0],[new Decimal(1e102), 0],[new Decimal(1e159), 0],[new Decimal(1e243), 0],[new Decimal("1e339"), 0],[new Decimal("1e429"), 0],[new Decimal("e1.798e308"), 0]];
+
+
+
+    function createGUI() {
+      let currencyContainer = el("currency-container");
+      for (let i = 0; i < currencies.length; i++) {
+        let currencyDiv = document.createElement("div");
+        currencyDiv.id = "currency";
+        currencyDiv.className = "currency";
+        currencyDiv.innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].name; 
+        currencyContainer.appendChild(currencyDiv); // Append to the container
+        currencyDivs.push(currencyDiv); // Store the divs for later updates
+      }
+    }
+
+    function createButtons() {
+let buttonContainer = el("button-container");
+for (let i = 0; i < 10; i++) {
+let button = document.createElement("button");
+button.id = "multiplier-button";
+button.innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1)) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
+buttonContainer.appendChild(button);
+buttons[0].push(button);
+button.onclick = function(){
+buymulti(basecosts[0].pow(i+1), basegains[0].pow(i+1));
+
+}; }// Append to the container
+
+for (let i = 0; i < 10; i++) {
+  let buttonContainer2 = el("rebirth-container");
+let button = document.createElement("button");
+button.id = "rebirth-button";
+button.innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1)) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
+buttonContainer2.appendChild(button);
+buttons[1].push(button);
+button.onclick = function(){
+buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
+
+};
+}
+
+
+
+    }
+    createButtons();
+
+  function createurbuttons() {
+    if (rank > 0 && buttons[2].length == 0) {
+  for (let i = 0; i < 10; i++) {
+
+  let buttonContainer3 = el("ultrarebirth-container");
+let button = document.createElement("button");
+button.id = "ultrarebirth-button";
+button.innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1)) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
+buttonContainer3.appendChild(button);
+buttons[2].push(button);
+button.onclick = function(){
+buyureb(basecosts[2].pow(i+1), basegains[2].pow(i+1));
+
+};
+  }
+}
+  }
+  function createprbuttons() {
+    if (rank > 2 && buttons[3].length == 0) {
+  for (let i = 0; i < 20; i++) {
+
+  let buttonContainer3 = el("prestige-container");
+let button = document.createElement("button");
+button.id = "prestige-button";
+button.innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1)) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
+buttonContainer3.appendChild(button);
+buttons[3].push(button);
+button.onclick = function(){
+buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
+
+};
+  }
+}
+  }
+
+
+  function createNewButtons(s, a, b) {
+let buttonContainer = el("button-container");
+if (b == 0) {
+for (let i = s; i < s + a; i++) {
+let button = document.createElement("button");
+button.id = "multiplier-button";
+button.innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1)) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
+buttonContainer.appendChild(button);
+buttons[0].push(button);
+button.onclick = function(){
+buymulti(basecosts[0].pow(i+1), basegains[0].pow(i+1));
+
+}; }
+}
+if (b == 1) {
+for (let i = s; i < s + a; i++) {
+  let buttonContainer2 = el("rebirth-container");
+let button = document.createElement("button");
+button.id = "rebirth-button";
+button.innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1)) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
+buttonContainer2.appendChild(button);
+buttons[1].push(button);
+button.onclick = function(){
+buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
+
+};
+}
+}
+if (b == 2) {
+    if (rank > 0) {
+  for (let i = s; i < s + a; i++) {
+
+  let buttonContainer3 = el("ultrarebirth-container");
+let button = document.createElement("button");
+button.id = "ultrarebirth-button";
+button.innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1)) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
+buttonContainer3.appendChild(button);
+buttons[2].push(button);
+button.onclick = function(){
+buyureb(basecosts[2].pow(i+1), basegains[2].pow(i+1));
+
+};
+  }
+}
+}
+if (b == 3) {
+    if (rank > 2) {
+  for (let i = s; i < s + a; i++) {
+
+    let buttonContainer3 = el("prestige-container");
+let button = document.createElement("button");
+button.id = "prestige-button";
+button.innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1)) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
+buttonContainer3.appendChild(button);
+buttons[3].push(button);
+button.onclick = function(){
+buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
+
+};
+  }
+}
+}
+  
+  }
+
+    
+
+
+
+
+    function updateGUI() {
+      for (let i = 0; i < currencies.length; i++) {
+        if (currencies[i].name == 'multiplier') { 
+          
+        currencyDivs[i].innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "x" + "</text-style> " + currencies[i].name;
+        } else {
+          currencyDivs[i].innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].name;
+        }
+
+createurbuttons();
+createprbuttons();
+for (let i = 0; i < buttons.length; i++) {
+
+if (buttonamounts[i] !== buttons[i].length) {
+  buttons[i] = [];
+  if (i == 0) {
+    el("button-container").innerHTML = "";
+  } else {
+    el(currencies[i + 1].name + "-container").innerHTML = "";
+
+  }
+createNewButtons(0, buttonamounts[i], i);
+
+}
+}
+
+      
+      }
+      for (let i = 0; i < buttons[0].length; i++) {
+buttons[0][i].innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1).mul(currencytotalmulti[1])) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
+
+    }
+    for (let i = 0; i < buttons[1].length; i++) {
+buttons[1][i].innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1).mul(currencytotalmulti[2])) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
+
+    }
+
+    for (let i = 0; i < buttons[2].length; i++) {
+buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
+
+    }
+    for (let i = 0; i < buttons[3].length; i++) {
+buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
+
+    }
+
+    el("rank-button").innerHTML = "Upgrade to rank " + (rank + 1) + " for <text-style text = " + currencies[rankcost[rank][1]].name + ">" + format(rankcost[rank][0]) + "</text-style> "   + currencies[rankcost[rank][1]].name;
+;
+if (rank > 0) {
+  el("sb0").style.display = "block";
+} else {
+  el("sb0").style.display = "none";
+}
+
+if (menu == 1) {
+  el("main").style.display = "block";
+} else {
+  el("main").style.display = "none";
+}
+if (menu == 2) {
+  el("ascension").style.display = "block";
+} else {
+  el("ascension").style.display = "none";
+}
+if (rank > 2) {
+  el("prestige-container").style.display = "block";
+} else {
+  el("prestige-container").style.display = "none";
+}
+el("ascensioncount").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].value) + "</text-style> " + layers[0].name + "s";
+el("ascensionpow").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].power) + "</text-style> " + "ascension power";
+el("ascensiontg").innerHTML = "You would get <text-style text = " + layers[0].name + ">" + format(layers[0].power.log10().pow(0.5).div(17.6)) + "</text-style> " + "ascensions";
+
+  }
+
+
+    createGUI();
+
+
+let currencytotalmulti = [
+getTotalMultiplier(0),
+getTotalMultiplier(1),
+getTotalMultiplier(2),
+getTotalMultiplier(3),
+getTotalMultiplier(4),
+
+
+
+
+];
+function getstatmulti() {
+currencies[0].multipliers[0] = currencies[1].value.add(1);
+currencies[0].multipliers[1] = currencies[3].value.add(1);
+currencies[1].multipliers[0] = currencies[2].value.add(1);
+currencies[2].multipliers[0] = currencies[3].value.mul(3).add(1);
+currencies[3].multipliers[0] = currencies[4].value.mul(5).add(1);
+
+
+
+
+}
+
+    setInterval(function() {
+      currencies[0].value = currencies[0].value.add(currencytotalmulti[0].mul(0.01))
+      layers[0].power = new Decimal(1).mul(currencies[0].value.add(1)).mul(currencies[1].value.add(1)).mul(currencies[2].value.add(1)).mul(currencies[3].value.add(1));
+
+      updateGUI(); 
+      currencytotalmulti[0] = getTotalMultiplier(0);
+      currencytotalmulti[1] = getTotalMultiplier(1);
+      currencytotalmulti[2] = getTotalMultiplier(2);
+      currencytotalmulti[3] = getTotalMultiplier(3);
+      currencytotalmulti[4] = getTotalMultiplier(4);
+
+      getstatmulti();
+      // Update the GUI
+    }, 10);
+
+    function getTotalMultiplier(a) {
+      let total = new Decimal(1);
+
+for (i = 0; i < currencies[a].multipliers.length; i++) {
+total = total.mul(currencies[a].multipliers[i]);
+
+     }
+return total;
+
+
+    }
+
+function buymulti(c, a) {
+if (currencies[0].value.gte(c)) {
+currencies[0].value = currencies[0].value.sub(c);
+currencies[1].value = currencies[1].value.add(a.mul(currencytotalmulti[1]));
+
+
+}
+}function buyreb(c, a) {
+if (currencies[1].value.gte(c)) {
+currencies[0].value = new Decimal(0);
+currencies[1].value = new Decimal(0);
+
+
+currencies[2].value = currencies[2].value.add(a.mul(currencytotalmulti[2]));
+
+
+}
+}
+function buyureb(c, a) {
+if (currencies[2].value.gte(c)) {
+currencies[0].value = new Decimal(0);
+currencies[1].value = new Decimal(0);
+currencies[2].value = new Decimal(0);
+
+
+currencies[3].value = currencies[3].value.add(a.mul(currencytotalmulti[3]));
+
+
+}
+}
+function buypres(c, a) {
+if (currencies[3].value.gte(c)) {
+currencies[0].value = new Decimal(0);
+currencies[1].value = new Decimal(0);
+currencies[2].value = new Decimal(0);
+currencies[3].value = new Decimal(0);
+
+
+currencies[4].value = currencies[4].value.add(a);
+
+
+}
+}
+function upgradeRank() {
+  
+if (currencies[rankcost[rank][1]].value.gte(rankcost[rank][0])) 
+ {
+  if (confirm("Are you sure you want to upgrade to rank " + (rank + 1) + "?")) {
+
+reset();
+rank++;
+if (rank > 1) {
+for (let i = 0; i < 9; i++) {
+
+buttonamounts[i] += 5;
+}
+  }
+  
+}
+
+} else {
+  alert("You do not have enough " + currencies[rankcost[rank][1]].name + " to upgrade to rank " + (rank + 1) + ". Get some more, and come back later!");
+}
+}
+
+function getfree(a) {
+if (a == 0) {
+  if (currencies[3].value.gte(1)) {
+  currencies[1].value = currencies[1].value.add(100);
+
+  }
+}
+}
+
+// Add these functions to your existing JavaScript code
+
+// Function to save the game state
+function saveGame() {
+    const gameState = {
+        currencies: currencies,
+        layers: layers,
+        rank: rank,
+        buttonamounts: buttonamounts
+    };
+    localStorage.setItem('buttonSimulatorSave', JSON.stringify(gameState));
+}
+
+// Function to load the game state
+function loadGame() {
+    const savedState = localStorage.getItem('buttonSimulatorSave');
+    if (savedState) {
+        const gameState = JSON.parse(savedState);
+        currencies = gameState.currencies.map(currency => ({
+            ...currency,
+            value: new Decimal(currency.value),
+            multipliers: currency.multipliers.map(m => new Decimal(m))
+        }));
+        layers = gameState.layers.map(layer => ({
+            ...layer,
+            value: new Decimal(layer.value),
+            power: new Decimal(layer.power),
+            multipliers: layer.multipliers.map(m => new Decimal(m))
+        }));
+        rank = gameState.rank;
+        buttonamounts = gameState.buttonamounts;
+        
+        // Recreate the GUI to reflect loaded state
+        el("currency-container").innerHTML = '';
+        el("button-container").innerHTML = '';
+        el("rebirth-container").innerHTML = '';
+        el("ultrarebirth-container").innerHTML = '';
+        el("prestige-container").innerHTML = '';
+        currencyDivs = [];
+        buttons = [[],[],[],[],[]];
+        createGUI();
+        createButtons();
+        createurbuttons();
+        createprbuttons();
+        updateGUI();
+    }
+}
+
+// Auto-save every 30 seconds
+setInterval(saveGame, 500);
+
+// Load the game when the page loads
+window.onload = function() {
+    loadGame();
+};
+
+// Add a manual save button (optional)
+function createSaveButton() {
+    let saveButton = document.createElement("button");
+    saveButton.id = "save-button";
+    saveButton.innerHTML = "Save Game";
+    saveButton.onclick = function() {
+        saveGame();
+        alert("Game saved!");
+    };
+    document.body.appendChild(saveButton);
+}
+
+createSaveButton();
+
+  </script>
+
+  <link rel="stylesheet" href="style/main.css">
+</html>
