@@ -1,0 +1,171 @@
+#currency, #ascensioncount, #ascensionpow, #ascensiontg, #menu-button {
+ font-family: Arial, Helvetica, sans-serif;
+ text-align: center;
+}
+#p {
+    font-family: Arial, Helvetica, sans-serif;
+}
+.menu-wrapper {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Center the buttons vertically */
+  } 
+#menu-button {
+    display: inline-block;
+    background-color: #cbd8cc; /* Green */
+    color: #fff; /* White */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#menu-button:hover {
+    background-color: #9da39d; /* Darker green */
+  }
+  
+  #menu-button:active {
+    background-color: #6f726f; /* Green */
+    transform: translateY(2px);
+  }
+  
+  /* Style the menu buttons to make them look like a tab menu */
+  #menu-button {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  #menu-button:last-child {
+    margin-right: 0;
+  }
+#multiplier-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: red;
+    border: darkred 3px solid;
+    color: white;
+
+}
+#special-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: orange;
+    border: darkorange 3px solid;
+    color: white;
+
+}
+#rebirth-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: blue;
+    border: darkblue 3px solid;
+    color: white;
+ 
+}
+#ultrarebirth-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(0, 0, 145);
+    border: rgb(0, 0, 53) 3px solid;
+    color: white;
+ 
+}
+#prestige-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(212, 0, 255);
+    border:  rgb(75, 0, 90);
+    color: white;
+ 
+}
+#ultraprestige-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(255, 196, 0);
+    border:  rgb(172, 132, 0);
+    color: white;
+ 
+}
+#rank-button {
+    width: 200px;
+    height: 50px;
+    background-color: green;
+    border: darkgreen 3px solid;
+    color: white;
+  
+}
+
+  
+
+
+text-style {
+    display: inline-block;
+    font-style: normal;
+    font-weight: 800;
+    text-shadow: 1px 1px 0px black, 0px 0px 2px black, 1px 1px 2px black;
+    color: white;
+    &[text="cash"] {
+        color:  green;
+    };
+    &[text="multiplier"] {
+        color: red;
+    };
+    &[text="rebirth"] {
+        color: rgb(0, 110, 255);
+    };
+    &[text="ultrarebirth"] {
+        color: rgb(0, 28, 184);
+    };
+    &[text="prestige"] {
+        color: rgb(212, 0, 255);
+    };
+    &[text="ultraprestige"] {
+        color:rgb(255, 196, 0);
+    };
+    &[text="ascension"] {
+        background: radial-gradient(circle, #68e700 0%, #0b6308 100%);
+        filter: drop-shadow(1px 1px black) drop-shadow(0px 0px 1px black);
+        text-shadow: none;
+       -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+     
+    };
+}
+@supports (-webkit-background-clip: text) and (-webkit-text-fill-color: transparent) {
+    &[text="core"],
+    &[text="humanoid"],
+    &[text="black-hole"],
+    &[text="ascension"] {
+        filter: drop-shadow(1px 1px black) drop-shadow(0px 0px 1px black);
+        text-shadow: none;
+    };
+
+    &[text="core"] {
+        background: radial-gradient(circle, #feff00 0%, #ff5500 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    };
+    &[text="humanoid"] {
+        background: linear-gradient(#003001, #00FF03, #003001);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    };
+    &[text="black-hole"] {
+        background: linear-gradient(magenta, purple, #303, purple, magenta);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    };
+   
+};
