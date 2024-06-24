@@ -1,9 +1,13 @@
 #currency, #ascensioncount, #ascensionpow, #ascensiontg, #menu-button {
  font-family: Arial, Helvetica, sans-serif;
  text-align: center;
+ color: white;
+
 }
 #p {
     font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
 }
 .menu-wrapper {
     display: flex;
@@ -12,13 +16,27 @@
   } 
 #menu-button {
     display: inline-block;
-    background-color: #cbd8cc; /* Green */
-    color: #fff; /* White */
+    background-color: white;
+    color: black; /* White */
     padding: 10px 20px;
-    border: none;
+    border-color: black;
     border-radius: 5px;
     cursor: pointer;
 }
+#option-button {
+    display: inline-block;
+    background-color: white;
+    color: black; /* White */
+    padding: 10px 20px;
+    border-color: black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#option-wrapper {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Center the buttons vertically */
+  } 
 #menu-button:hover {
     background-color: #9da39d; /* Darker green */
   }
@@ -29,12 +47,12 @@
   }
   
   /* Style the menu buttons to make them look like a tab menu */
-  #menu-button {
+  #menu-button, #option-button{
     display: inline-block;
     margin-right: 10px;
   }
   
-  #menu-button:last-child {
+  #menu-button, #option-button:last-child {
     margin-right: 0;
   }
 #multiplier-button {
@@ -43,6 +61,16 @@
     height: 100px;
     border-radius: 50%;
     background-color: red;
+    border: darkred 3px solid;
+    color: white;
+
+}
+#multiplier-button-cant {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(155, 0, 0);
     border: darkred 3px solid;
     color: white;
 
@@ -67,6 +95,16 @@
     color: white;
  
 }
+#rebirth-button-cant {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(0, 0, 156);
+    border: darkblue 3px solid;
+    color: white;
+ 
+}
 #ultrarebirth-button {
     display: inline-block;
     width: 100px;
@@ -77,13 +115,33 @@
     color: white;
  
 }
+#ultrarebirth-button-cant {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(0, 0, 75);
+    border: rgb(0, 0, 53) 3px solid;
+    color: white;
+ 
+}
 #prestige-button {
     display: inline-block;
     width: 100px;
     height: 100px;
     border-radius: 50%;
     background-color: rgb(212, 0, 255);
-    border:  rgb(75, 0, 90);
+    border:  rgb(75, 0, 90) 3px solid;;
+    color: white;
+ 
+}
+#prestige-button-cant {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(127, 0, 153);
+    border:  rgb(75, 0, 90) 3px solid;;
     color: white;
  
 }
@@ -97,6 +155,16 @@
     color: white;
  
 }
+#ultraprestige-button-cant {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(122, 94, 0);
+    border:  rgb(172, 132, 0);
+    color: white;
+ 
+}
 #rank-button {
     width: 200px;
     height: 50px;
@@ -106,6 +174,10 @@
   
 }
 
+body {
+    background-color: rgb(116, 116, 116);
+
+}
   
 
 
