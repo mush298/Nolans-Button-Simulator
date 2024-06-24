@@ -2,11 +2,17 @@
 <html>
   <script src="js/modules/break_eternity.js"></script>
   <script src="js/modules/format.js"></script>
-  <div id="currency">Nolan's Button Simulator v0.0 alpha</div>
+  
+  <div id="currency">Nolan's Button Simulator v0.1</div>
   <div class="menu-wrapper">
     <button id="menu-button" onclick="changemenu(1)">Main</button>
     <button id="menu-button" onclick="changemenu(2)"><text-style text = "ascension">Ascension</text-style></button>
     <button id="menu-button" onclick="changemenu(3)">Options</button>
+  </div>
+  <div id="option-wrapper">
+    <button id="option-button" onclick="saveGame(1)">Save</button>
+    <button id="option-button" onclick="changeformat(1)">Standard Format</button>
+    <button id="option-button" onclick="changeformat(0)">Scientific Format</button>
   </div>
   <div id = "main">
   <currency>
@@ -35,8 +41,11 @@
     <div id = "ascensioncount">You have <text-style text = "ascension">50</text-style> ascensions</div>
     <div id = "ascensionpow">You have <text-style text = "ascension">123.4Dc</text-style> ascension power</div>
     <div id = "ascensiontg">You would get <text-style text = "ascension">999Vec</text-style> ascensions</div>
-    <div id = "currency">At a higher rank, you can ascend all your stats for ascensions, 
-      for x = ascension amount, they give 100x cash, 50x multiplier, 25x rebirths, 12.5x ultra rebirths, 5x prestiges, and 2x ultra prestiges</div>
+    <div id = "currency">At rank 10, you can ascend all your stats for ascensions, 
+      for x = ascension amount, they give ^+0.1x cash, 1e12x multiplier, 2.5e10x rebirths, 1.25e9x ultra rebirths, 500,000x prestiges, and 1,000x ultra prestiges
+    You could get up to 2.1 ascensions, but at rank 16, you can get up to 10 ascensions</div>
+      <button id = "option-button" onclick="ascend()">Ascend</button>
+
 
   </div>
 
@@ -53,7 +62,11 @@
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
-          new Decimal(1)
+          new Decimal(1),
+          new Decimal(1),
+          new Decimal(1),
+          new Decimal(1),
+
 
         ],
  
@@ -62,35 +75,41 @@
         name: 'multiplier',
         value: new Decimal(0),
         multipliers: [
-          new Decimal(1)
+          new Decimal(1),
+          new Decimal(1),
+       
         ],
       },
       {
         name: 'rebirth',
         value: new Decimal(0),
         multipliers: [
-          new Decimal(1)
+          new Decimal(1),
+          new Decimal(1),
         ],
       },
       {
         name: 'ultrarebirth',
         value: new Decimal(0),
         multipliers: [
-          new Decimal(1)
+          new Decimal(1),
+          new Decimal(1),
         ],
       },
       {
         name: 'prestige',
         value: new Decimal(0),
         multipliers: [
-          new Decimal(1)
+          new Decimal(1),
+          new Decimal(1),
         ],
       },
       {
         name: 'ultraprestige',
         value: new Decimal(0),
         multipliers: [
-          new Decimal(1)
+          new Decimal(1),
+          new Decimal(1),
         ],
       }
     ];
@@ -114,6 +133,8 @@
     }
 let rank = 0;
 let menu = 1;
+let buttonessence = new Decimal(125);
+
 function changemenu(n) {
   menu = n;
 }
@@ -123,11 +144,27 @@ function changemenu(n) {
     let basecosts = [new Decimal(10), new Decimal(100), new Decimal(1000), new Decimal(10000), new Decimal(100000)];
     let basegains = [new Decimal(2.5), new Decimal(1.5), new Decimal(1.5), new Decimal(1.5), new Decimal(1.5)];
     setInterval(function() {
+      if (rank < 11) {
  basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1)))];
+      } else if (rank > 10 && rank < 16) {
+
+        basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1)))];
+    
+      } else {
+        basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1)))];
+    
+      }
 
     }, 50);
 
-    let rankcost = [[new Decimal(250000), 0],[new Decimal(1e14), 0],[new Decimal(1e28), 0],[new Decimal(1e50), 0],[new Decimal(1e75), 0],[new Decimal(1e102), 0],[new Decimal(1e159), 0],[new Decimal(1e243), 0],[new Decimal("1e339"), 0],[new Decimal("1e429"), 0],[new Decimal("e1.798e308"), 0]];
+    let rankcost = [[new Decimal(250000), 0],[new Decimal(1e14), 0]
+    ,[new Decimal(1e28), 0],[new Decimal(1e50), 0],[new Decimal(1e75), 0],[new Decimal(1e102), 0]
+    ,[new Decimal(1e159), 0],[new Decimal(1e243), 0],[new Decimal("1e339"), 0],[new Decimal("1e429"), 0]
+    ,[new Decimal("1e800"), 0],[new Decimal("1e1330"), 0],[new Decimal("1e1830"), 0],[new Decimal("1e2660"), 0],
+    [new Decimal("1e7100"), 0],
+    [new Decimal("1e15400"), 0],
+    [new Decimal("1e24400"), 0],
+    [new Decimal("e1.798e308"), 0]];
 
 
 
@@ -172,7 +209,7 @@ buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
 
 
     }
-    createButtons();
+   
 
   function createurbuttons() {
     if (rank > 0 && buttons[2].length == 0) {
@@ -272,6 +309,7 @@ buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
   }
 }
 }
+
   
   }
 
@@ -289,8 +327,7 @@ buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
           currencyDivs[i].innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].name;
         }
 
-createurbuttons();
-createprbuttons();
+
 for (let i = 0; i < buttons.length; i++) {
 
 if (buttonamounts[i] !== buttons[i].length) {
@@ -310,19 +347,44 @@ createNewButtons(0, buttonamounts[i], i);
       }
       for (let i = 0; i < buttons[0].length; i++) {
 buttons[0][i].innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1).mul(currencytotalmulti[1])) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
+if (currencies[0].value.gte(basecosts[0].pow(i+1))) {
+  buttons[0][i].id = "multiplier-button";
 
+} else {
+  buttons[0][i].id = "multiplier-button-cant";
+
+}
     }
     for (let i = 0; i < buttons[1].length; i++) {
 buttons[1][i].innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1).mul(currencytotalmulti[2])) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
+if (currencies[1].value.gte(basecosts[1].pow(i+1))) {
+  buttons[1][i].id = "rebirth-button";
 
+} else {
+  buttons[1][i].id = "rebirth-button-cant";
+
+}
     }
 
     for (let i = 0; i < buttons[2].length; i++) {
 buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
+if (currencies[2].value.gte(basecosts[2].pow(i+1))) {
+  buttons[2][i].id = "ultrarebirth-button";
 
+} else {
+  buttons[2][i].id = "ultrarebirth-button-cant";
+
+}
     }
     for (let i = 0; i < buttons[3].length; i++) {
 buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
+if (currencies[3].value.gte(basecosts[3].pow(i+1))) {
+  buttons[3][i].id = "prestige-button";
+
+} else {
+  buttons[3][i].id = "prestige-button-cant";
+
+}
 
     }
 
@@ -349,9 +411,16 @@ if (rank > 2) {
 } else {
   el("prestige-container").style.display = "none";
 }
+
+if (menu == 3) {
+  el("option-wrapper").style.display = "block";
+} else {
+  el("option-wrapper").style.display = "none";
+
+}
 el("ascensioncount").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].value) + "</text-style> " + layers[0].name + "s";
 el("ascensionpow").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].power) + "</text-style> " + "ascension power";
-el("ascensiontg").innerHTML = "You would get <text-style text = " + layers[0].name + ">" + format(layers[0].power.log10().pow(0.5).div(17.6)) + "</text-style> " + "ascensions";
+el("ascensiontg").innerHTML = "You would get <text-style text = " + layers[0].name + ">" + format(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value)) + "</text-style> " + "ascensions";
 
   }
 
@@ -372,10 +441,27 @@ getTotalMultiplier(4),
 ];
 function getstatmulti() {
 currencies[0].multipliers[0] = currencies[1].value.add(1);
-currencies[0].multipliers[1] = currencies[3].value.add(1);
+if (currencies[0].value.pow(layers[0].value.div(10)).gte("e10000")) {
+currencies[0].multipliers[1] = new Decimal("e10000")
+} else {
+  currencies[0].multipliers[1] = currencies[0].value.pow(layers[0].value.div(10))
+}
+currencies[0].multipliers[2] = currencies[3].value.add(1);
 currencies[1].multipliers[0] = currencies[2].value.add(1);
+currencies[1].multipliers[1] = layers[0].value.mul(1e12).add(1);
 currencies[2].multipliers[0] = currencies[3].value.mul(3).add(1);
+currencies[2].multipliers[1] = layers[0].value.mul(2.5e10).add(1);
 currencies[3].multipliers[0] = currencies[4].value.mul(5).add(1);
+currencies[3].multipliers[1] = layers[0].value.mul(1.25e9).add(1);
+currencies[4].multipliers[1] = layers[0].value.mul(500000).add(1);
+if (rank > 13) {
+  currencies[0].multipliers[3] = currencies[2].value.add(1);
+  currencies[1].multipliers[2] = currencies[4].value.add(1);
+}
+currencies[1].multipliers[3] = new Decimal(1);
+
+
+
 
 
 
@@ -447,11 +533,12 @@ currencies[2].value = new Decimal(0);
 currencies[3].value = new Decimal(0);
 
 
-currencies[4].value = currencies[4].value.add(a);
+currencies[4].value = currencies[4].value.add(a.mul(currencytotalmulti[4]));
 
 
 }
 }
+
 function upgradeRank() {
   
 if (currencies[rankcost[rank][1]].value.gte(rankcost[rank][0])) 
@@ -462,10 +549,16 @@ reset();
 rank++;
 if (rank > 1) {
 for (let i = 0; i < 9; i++) {
-
+if (rank < 19) {
 buttonamounts[i] += 5;
 }
+if (rank >= 19) {
+  buttonamounts[i] = 1;
+
+}
+}
   }
+
   
 }
 
@@ -486,7 +579,7 @@ if (a == 0) {
 // Add these functions to your existing JavaScript code
 
 // Function to save the game state
-function saveGame() {
+function saveGame(s) {
     const gameState = {
         currencies: currencies,
         layers: layers,
@@ -494,6 +587,7 @@ function saveGame() {
         buttonamounts: buttonamounts
     };
     localStorage.setItem('buttonSimulatorSave', JSON.stringify(gameState));
+    if (s == 1) {alert("Game saved!");}
 }
 
 // Function to load the game state
@@ -524,11 +618,12 @@ function loadGame() {
         currencyDivs = [];
         buttons = [[],[],[],[],[]];
         createGUI();
-        createButtons();
-        createurbuttons();
-        createprbuttons();
+        
         updateGUI();
     }
+
+
+
 }
 
 // Auto-save every 30 seconds
@@ -539,21 +634,45 @@ window.onload = function() {
     loadGame();
 };
 
-// Add a manual save button (optional)
-function createSaveButton() {
-    let saveButton = document.createElement("button");
-    saveButton.id = "save-button";
-    saveButton.innerHTML = "Save Game";
-    saveButton.onclick = function() {
-        saveGame();
-        alert("Game saved!");
-    };
-    document.body.appendChild(saveButton);
+function ascend() {
+  if (rank > 9) {
+  layers[0].value = layers[0].value.add(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value));
+  reset();
+  currencies[0].value = new Decimal(0);
+  buttonamounts = [10,10,10,10,10];
+  
+  if (rank < 16) {
+    if (layers[0].value.gte(2.1)) {
+      layers[0].value = new Decimal(2.1);
+
+    }
+  } else if (rank >= 16) {
+    if (layers[0].value.gte(10)) {
+      layers[0].value = new Decimal(10);
+
+    }
+  }
+  rank = 0;
 }
 
-createSaveButton();
 
+
+
+}
+
+// Add a manual save button (optional)
+
+function changeformat(f) {
+if (f == 0) {
+  options.notation= "sc";
+
+}
+if (f == 1) {
+  options.notation = "st";
+
+}
+}
   </script>
 
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="style/main.css">
 </html>
