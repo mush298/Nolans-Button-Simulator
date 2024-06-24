@@ -457,8 +457,12 @@ currencies[4].multipliers[1] = layers[0].value.mul(500000).add(1);
 if (rank > 13) {
   currencies[0].multipliers[3] = currencies[2].value.add(1);
   currencies[1].multipliers[2] = currencies[4].value.add(1);
+} else { 
+  currencies[1].multipliers[2] = new Decimal(1);
 }
+
 currencies[1].multipliers[3] = new Decimal(1);
+
 
 
 
