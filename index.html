@@ -3,11 +3,15 @@
   <script src="js/modules/break_eternity.js"></script>
   <script src="js/modules/format.js"></script>
   
-  <div id="currency">Nolan's Button Simulator v0.1</div>
+  <div id="currency">Nolan's Button Simulator v0.2</div>
+  <div class="ticker-container">
+    <div class="ticker" id="ticker"></div>
+</div>
   <div class="menu-wrapper">
     <button id="menu-button" onclick="changemenu(1)">Main</button>
     <button id="menu-button" onclick="changemenu(2)"><text-style text = "ascension">Ascension</text-style></button>
     <button id="menu-button" onclick="changemenu(3)">Options</button>
+    <button id="menu-button" onclick="changemenu(4)">Upgrades</button>
   </div>
   <div id="option-wrapper">
     <button id="option-button" onclick="saveGame(1)">Save</button>
@@ -48,6 +52,10 @@
 
 
   </div>
+  <div id = "upgrades">
+
+  </div>
+
 
   <script>
     let options = {
@@ -59,6 +67,7 @@
     let currencies = [
       {
         name: 'cash',
+        cname: 'cash',
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
@@ -73,6 +82,7 @@
       },
       {
         name: 'multiplier',
+        cname: 'multiplier',
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
@@ -82,6 +92,7 @@
       },
       {
         name: 'rebirth',
+        cname: 'rebirths',
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
@@ -90,6 +101,7 @@
       },
       {
         name: 'ultrarebirth',
+        cname: 'ultra rebirths',
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
@@ -98,6 +110,7 @@
       },
       {
         name: 'prestige',
+        cname: 'prestiges',
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
@@ -106,6 +119,7 @@
       },
       {
         name: 'ultraprestige',
+        cname: 'ultra prestiges',
         value: new Decimal(0),
         multipliers: [
           new Decimal(1),
@@ -116,6 +130,7 @@
     let layers = [
       {
         name: 'ascension',
+        cname: 'ascensions',
         value: new Decimal(0),
         power: new Decimal(0),
         multipliers: [
@@ -164,6 +179,9 @@ function changemenu(n) {
     [new Decimal("1e7100"), 0],
     [new Decimal("1e15400"), 0],
     [new Decimal("1e24400"), 0],
+    [new Decimal("1e26900"), 0],
+    [new Decimal("1e35000"), 0],
+    [new Decimal("1e75000"), 0],
     [new Decimal("e1.798e308"), 0]];
 
 
@@ -174,7 +192,7 @@ function changemenu(n) {
         let currencyDiv = document.createElement("div");
         currencyDiv.id = "currency";
         currencyDiv.className = "currency";
-        currencyDiv.innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].name; 
+        currencyDiv.innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].cname; 
         currencyContainer.appendChild(currencyDiv); // Append to the container
         currencyDivs.push(currencyDiv); // Store the divs for later updates
       }
@@ -257,7 +275,11 @@ button.innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(bas
 buttonContainer.appendChild(button);
 buttons[0].push(button);
 button.onclick = function(){
+  if(!rank >= 18) {
 buymulti(basecosts[0].pow(i+1), basegains[0].pow(i+1));
+  } else {
+    buymulti(basecosts[0].pow(new Decimal(buttonessence).add(1)), basegains[0].pow(new Decimal(buttonessence).add(1)));
+  }
 
 }; }
 }
@@ -270,7 +292,13 @@ button.innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basega
 buttonContainer2.appendChild(button);
 buttons[1].push(button);
 button.onclick = function(){
-buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
+  if(!rank >= 18) {
+  
+  buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
+  } else {
+    buyreb(basecosts[1].pow(new Decimal(buttonessence).add(1)), basegains[1].pow(new Decimal(buttonessence).add(1)));
+  }
+
 
 };
 }
@@ -286,7 +314,13 @@ button.innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(b
 buttonContainer3.appendChild(button);
 buttons[2].push(button);
 button.onclick = function(){
-buyureb(basecosts[2].pow(i+1), basegains[2].pow(i+1));
+  if(!rank >= 18) {
+  
+  buyureb(basecosts[2].pow(i+1), basegains[2].pow(i+1));
+  } else {
+    buyureb(basecosts[2].pow(new Decimal(buttonessence).add(1)), basegains[2].pow(new Decimal(buttonessence).add(1)));
+  }
+
 
 };
   }
@@ -303,7 +337,12 @@ button.innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(baseg
 buttonContainer3.appendChild(button);
 buttons[3].push(button);
 button.onclick = function(){
-buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
+  if(!rank >= 18) {
+  
+  buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
+  } else {
+    buypres(basecosts[3].pow(new Decimal(buttonessence).add(1)), basegains[3].pow(new Decimal(buttonessence).add(1)));
+  }
 
 };
   }
@@ -346,8 +385,13 @@ createNewButtons(0, buttonamounts[i], i);
       
       }
       for (let i = 0; i < buttons[0].length; i++) {
+        if (!rank >= 18) {
 buttons[0][i].innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1).mul(currencytotalmulti[1])) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
-if (currencies[0].value.gte(basecosts[0].pow(i+1))) {
+        } else {
+          buttons[0][i].innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[1])) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(new Decimal(buttonessence).add(1))) + "</text-style> cash"; 
+
+        }
+        if (currencies[0].value.gte(basecosts[0].pow(i+1))) {
   buttons[0][i].id = "multiplier-button";
 
 } else {
@@ -356,7 +400,11 @@ if (currencies[0].value.gte(basecosts[0].pow(i+1))) {
 }
     }
     for (let i = 0; i < buttons[1].length; i++) {
+if (!rank >= 18) {
 buttons[1][i].innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1).mul(currencytotalmulti[2])) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
+        } else {
+          buttons[1][i].innerHTML =      "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[2])) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(new Decimal(buttonessence).add(1))) + "x</text-style> multiplier"; 
+        }
 if (currencies[1].value.gte(basecosts[1].pow(i+1))) {
   buttons[1][i].id = "rebirth-button";
 
@@ -367,7 +415,12 @@ if (currencies[1].value.gte(basecosts[1].pow(i+1))) {
     }
 
     for (let i = 0; i < buttons[2].length; i++) {
-buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
+if (!rank >= 18) {
+ buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
+} else {
+  buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(new Decimal(buttonessence).add(1))) + "</text-style> rebirths"; 
+}
+
 if (currencies[2].value.gte(basecosts[2].pow(i+1))) {
   buttons[2][i].id = "ultrarebirth-button";
 
@@ -377,8 +430,13 @@ if (currencies[2].value.gte(basecosts[2].pow(i+1))) {
 }
     }
     for (let i = 0; i < buttons[3].length; i++) {
-buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
-if (currencies[3].value.gte(basecosts[3].pow(i+1))) {
+
+      if (!rank >= 18) {
+        buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
+      } else {
+        buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(new Decimal(buttonessence).add(1))) + "</text-style> ultra rebirths"; 
+      }
+      if (currencies[3].value.gte(basecosts[3].pow(i+1))) {
   buttons[3][i].id = "prestige-button";
 
 } else {
@@ -418,9 +476,16 @@ if (menu == 3) {
   el("option-wrapper").style.display = "none";
 
 }
+
+if (menu == 4) {
+  el("upgrades").style.display = "block";
+} else {
+  el("upgrades").style.display = "none";
+
+}
 el("ascensioncount").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].value) + "</text-style> " + layers[0].name + "s";
 el("ascensionpow").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].power) + "</text-style> " + "ascension power";
-el("ascensiontg").innerHTML = "You would get <text-style text = " + layers[0].name + ">" + format(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value)) + "</text-style> " + "ascensions";
+el("ascensiontg").innerHTML = "You would get <text-style text = " + layers[0].name + ">" + format(Math.max(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value), 0)) + "</text-style> " + "ascensions";
 
   }
 
@@ -553,11 +618,15 @@ reset();
 rank++;
 if (rank > 1) {
 for (let i = 0; i < 9; i++) {
-if (rank < 19) {
+if (rank < 18) {
 buttonamounts[i] += 5;
 }
-if (rank >= 19) {
+if (rank >= 18) {
   buttonamounts[i] = 1;
+if (rank > 18) {
+  buttonessence = buttonessence.add(rank)
+
+}
 
 }
 }
@@ -583,12 +652,14 @@ if (a == 0) {
 // Add these functions to your existing JavaScript code
 
 // Function to save the game state
+// Function to save the game state
 function saveGame(s) {
     const gameState = {
         currencies: currencies,
         layers: layers,
         rank: rank,
-        buttonamounts: buttonamounts
+        buttonamounts: buttonamounts,
+        buttonessence: buttonessence  // Add buttonessence to the saved state
     };
     localStorage.setItem('buttonSimulatorSave', JSON.stringify(gameState));
     if (s == 1) {alert("Game saved!");}
@@ -612,7 +683,8 @@ function loadGame() {
         }));
         rank = gameState.rank;
         buttonamounts = gameState.buttonamounts;
-        
+        buttonessence = new Decimal(gameState.buttonessence);  // Load buttonessence and convert to Decimal
+
         // Recreate the GUI to reflect loaded state
         el("currency-container").innerHTML = '';
         el("button-container").innerHTML = '';
@@ -625,10 +697,11 @@ function loadGame() {
         
         updateGUI();
     }
-
-
-
 }
+
+
+
+
 
 // Auto-save every 30 seconds
 setInterval(saveGame, 500);
@@ -640,9 +713,10 @@ window.onload = function() {
 
 function ascend() {
   if (rank > 9) {
-  layers[0].value = layers[0].value.add(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value));
+  layers[0].value = layers[0].value.add(Math.max(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value), 0));
   reset();
   currencies[0].value = new Decimal(0);
+  buttonessence = new Decimal(125);
   buttonamounts = [10,10,10,10,10];
   
   if (rank < 16) {
@@ -679,4 +753,7 @@ if (f == 1) {
   </script>
 
   <link rel="stylesheet" href="styles/main.css">
+  <script src = "js/upgrades.js"></script>
+  <script src = "js/news.js"></script>
+
 </html>
