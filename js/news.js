@@ -144,14 +144,15 @@ Luna: (beginning to shed tears) I don't know, little dude. I don't know.
 
 Back in the ambulance, Ronnie Anne was holding Lincoln's hand while tears ran down her face.
 
-Ronnie Anne's Mind: Please, Lincoln! Don't die on me!`, 'When I was your age, 100 was considered a big number, well now its ' + format(layers[0].power) + ', Kids these days...', "Did you just disrespect Skibidi Toilet?  Well yes, but you dont understand... Why, why would you do this? He just has L Rizz, He's a sigma, you don't think he's a sigma. Mike- You stopped watching YouTube Shorts, and now you have L Rizz, you aren't even a sigma! I'm an even bigger sigma. Skibidi Toilet is the alpha, he is more sigma than anyone. I'm bigger than me. Cap, skibidi toilet MOGS you. No he dosen't, Aiden Ross and Kai Cenat both ratioed him- Never rizz me ever again.", "Nolan's Button Simulator: Rewritten (wip title) coming soon!"];
+Ronnie Anne's Mind: Please, Lincoln! Don't die on me!`, 'When I was your age, 100 was considered a big number, well now its ' + format('e1.5e18') + ', Kids these days...', "Did you just disrespect Skibidi Toilet?  Well yes, but you dont understand... Why, why would you do this? He just has L Rizz, He's a sigma, you don't think he's a sigma. Mike- You stopped watching YouTube Shorts, and now you have L Rizz, you aren't even a sigma! I'm an even bigger sigma. Skibidi Toilet is the alpha, he is more sigma than anyone. I'm bigger than me. Cap, skibidi toilet MOGS you. No he dosen't, Aiden Ross and Kai Cenat both ratioed him- Never rizz me ever again.", " new Date().toUTCString();", "You are now manually breathing", "whats 9 + 10?  " + format('ee21.69') + " No it isnt, its " + format("e6.9e694.20")];
 
 setInterval(function() {
-    messages[1] = 'When I was your age, 100 was considered a big number, well now its ' + format(layers[0].power.pow(69420)) + ', Kids these days...';
+    messages[1] = 'When I was your age, 100 was considered a big number, well now its ' + format('e1.5e18') + ', Kids these days...';
+    messages[3] =  new Date().toUTCString();
 }, 50)
 
 
-let currentIndex = 1;
+let currentIndex = 5;
 
 function updateTicker() {
     const ticker = document.getElementById('ticker');
