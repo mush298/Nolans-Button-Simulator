@@ -1,60 +1,12 @@
-#currency, #ascensioncount, #ascensionpow, #ascensiontg, #menu-button {
- font-family: Arial, Helvetica, sans-serif;
- text-align: center;
- color: white;
-
+p, h1, .progress-text {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif
 }
-#p {
+#maintitle {
+    text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    color: white;
-
+    font-weight: bold;
 }
-.menu-wrapper {
-    display: flex;
-    justify-content: center; /* Center the buttons horizontally */
-    align-items: center; /* Center the buttons vertically */
-  } 
-#menu-button {
-    display: inline-block;
-    background-color: white;
-    color: black; /* White */
-    padding: 10px 20px;
-    border-color: black;
-    border-radius: 5px;
-    cursor: pointer;
-}
-#option-button {
-    display: inline-block;
-    background-color: white;
-    color: black; /* White */
-    padding: 10px 20px;
-    border-color: black;
-    border-radius: 5px;
-    cursor: pointer;
-}
-#option-wrapper {
-    display: flex;
-    justify-content: center; /* Center the buttons horizontally */
-    align-items: center; /* Center the buttons vertically */
-  } 
-#menu-button:hover {
-    background-color: #9da39d; /* Darker green */
-  }
-  
-  #menu-button:active {
-    background-color: #6f726f; /* Green */
-    transform: translateY(2px);
-  }
-  
-  /* Style the menu buttons to make them look like a tab menu */
-  #menu-button, #option-button{
-    display: inline-block;
-    margin-right: 10px;
-  }
-  
-  #menu-button, #option-button:last-child {
-    margin-right: 0;
-  }
 #multiplier-button {
     display: inline-block;
     width: 100px;
@@ -63,6 +15,7 @@
     background-color: red;
     border: darkred 3px solid;
     color: white;
+    font-size: 10.5px;
 
 }
 #multiplier-button-cant {
@@ -73,16 +26,7 @@
     background-color: rgb(155, 0, 0);
     border: darkred 3px solid;
     color: white;
-
-}
-#special-button {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: orange;
-    border: darkorange 3px solid;
-    color: white;
+    font-size: 10.5px;
 
 }
 #rebirth-button {
@@ -93,6 +37,7 @@
     background-color: blue;
     border: darkblue 3px solid;
     color: white;
+    font-size: 10.5px;
  
 }
 #rebirth-button-cant {
@@ -103,7 +48,7 @@
     background-color: rgb(0, 0, 156);
     border: darkblue 3px solid;
     color: white;
- 
+    font-size: 10.5px;
 }
 #ultrarebirth-button {
     display: inline-block;
@@ -113,7 +58,7 @@
     background-color: rgb(0, 0, 145);
     border: rgb(0, 0, 53) 3px solid;
     color: white;
- 
+    font-size: 10.5px;
 }
 #ultrarebirth-button-cant {
     display: inline-block;
@@ -123,7 +68,7 @@
     background-color: rgb(0, 0, 75);
     border: rgb(0, 0, 53) 3px solid;
     color: white;
- 
+    font-size: 10.5px;
 }
 #prestige-button {
     display: inline-block;
@@ -145,42 +90,135 @@
     color: white;
  
 }
-#ultraprestige-button {
+button {
     display: inline-block;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: rgb(255, 196, 0);
-    border:  rgb(172, 132, 0);
-    color: white;
- 
+    background-color: white;
+    /* White */
+    padding: 10px 20px;
+    
+    border-radius: 5px;
+    cursor: pointer;
 }
-#ultraprestige-button-cant {
+#normal-button {
+    border-color: black;
+    color: black;
+}
+#infinity-button {
+
+    color: orange; /* White */
+   
+    border-color: orange;
+    
+}
+#eternity-button {
+
+    color: purple; /* White */
+   
+    border-color: purple;
+    
+}
+#quantum-button {
+
+    color: green; /* White */
+   
+    border-color: green;
+    
+}
+#reality-button {
+
+    color: blue; /* White */
+   
+    border-color: blue;
+    
+}
+#finality-button {
+
+    color: red; /* White */
+   
+    border-color: red;
+    
+}
+
+
+#rank-button, #tier-button {
     display: inline-block;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: rgb(122, 94, 0);
-    border:  rgb(172, 132, 0);
-    color: white;
+    background-color: white;
+    color: black; /* White */
+    padding: 20px 30px;
+    border-color: black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.wipe {
+    color: white; 
+    background-color: red;
+    border-color: darkred;
+}
+.menu-wrapper, .optionsrow, #rank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Add space between flex items */
+}
+
+
+.ticker-container {
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border-color: black;
+    padding: 10px 0;
+    width: 100%;
+}
+html, body {
  
+   
+        overflow-x: hidden; /* Hide horizontal scrollbar */
+      /* Hide horizontal scrollbar */
 }
-#rank-button {
-    width: 200px;
-    height: 50px;
-    background-color: green;
-    border: darkgreen 3px solid;
+
+.ticker {
+    white-space: nowrap;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 100%;
+    animation: ticker linear;
+}
+@keyframes ticker {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100%, 0);
+    }
+}
+.progress-container {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    background-color: #6d4444;
+    padding: 3px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.progress-bar {
+    width: 0;
+    height: 24px;
+    background-color: #4CAF50;
+    border-radius: 3px;
+    transition: width 0.5s ease-in-out;
+}
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
-  
+    font-weight: bold;
 }
-
-body {
-    background-color: rgb(116, 116, 116);
-
-}
-  
-
-
 text-style {
     display: inline-block;
     font-style: normal;
@@ -241,3 +279,31 @@ text-style {
     };
    
 };
+.achievement, .achievement-got {
+   
+   
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 5px;
+}
+
+.achievement {
+    width: 100px;    
+    height: 100px;  
+    background-color: white;
+    color: black;
+}
+
+.achievement-got {
+    background-color: green;
+    color: white;
+    width: 100px;    
+    height: 100px;
+}
+
+.achievements {
+    text-align: center;
+}
