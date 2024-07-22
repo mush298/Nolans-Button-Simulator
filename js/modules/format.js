@@ -11,12 +11,7 @@ const ST_NAMES = [
 		["","Me","Du","Tr","Te","Pe","He","Hp","Ot","En"],
 		["","c","Ic","TCn","TeC","PCn","HCn","HpC","OCn","ECn"],
 		["","Hc","DHe","THt","TeH","PHc","HHe","HpH","OHt","EHc"]
-	], [
-  ["","Ki","Mg","Gi","Te","Pet","Exa","Zet","Yot","Xen","Dak","Hen","Dok","Tradak","Tedak","Pedak","Exdak","Zedak","Yodak","Nedak"],
-  ["ka","ken","cod","ctr","cte","cpet","kect","czet","kyot","cxen"],
-  ["","","I","Tra","Ted","Ped","Ect","Zed","Yod","Ned"],
-  ["","Ho","Bo","Tro","To","Po","Exo","Zo","Yoo","Not"]
-]
+	]
 ]
 
 const FORMATS = {
@@ -231,14 +226,16 @@ const FORMATS = {
         format(ex, acc, max) {
             ex = E(ex)
             let e = ex.log10().floor()
-            if (e.lt(3003) && e.gte(max)) return format(ex,acc,max,"st")
+            if (e.lt(63) && e.gte(max)) return format(ex,acc,max,"st")
             else {
                 if (ex.gte("eeee10")) {
                     let slog = ex.slog()
                     return (slog.gte(1e9)?'':E(10).pow(slog.sub(slog.floor())).toFixed(4)) + "F" + format(slog.floor(),0,max)
                 }
-                let m = ex.div(E(10).pow(e))
-                return e.gte(1e3) ? (e.gte(1e9)?"":m.toFixed(2))+"e"+this.format(e,0,max) : format(ex,acc,max,"sc")
+                let ee = e.log10().floor(), f = Decimal.sub(5, ee).max(0).min(2).toNumber()
+                let m = ex.div(E(10).pow(e)).min(10-10**-f)
+                let be = ee.gte(6)
+                return e.gte(1e3) ? (be?"":m.toFixed(f))+"e"+this.format(e,0,max) : format(ex,acc,max,"sc")
             }
         }
     },
@@ -270,18 +267,6 @@ const FORMATS = {
         if (t == 1 && o == 0) r += "Vec"
         else r += ST_NAMES[2][1][o] + ST_NAMES[2][2][t]
         r += ST_NAMES[2][3][h]
-  
-        return r
-      },
-      tier3(x) {
-        let o = x % 10
-        let t = Math.floor(x / 10) % 10
-        let h = Math.floor(x / 100) % 10
-  
-        let r = ''
-        if (x < 20) return ST_NAMES[3][0][x]
-        else r += ST_NAMES[3][1][o] + ST_NAMES[3][2][t]
-        r += ST_NAMES[3][3][h]
   
         return r
       },
@@ -325,7 +310,7 @@ function toSuperscript(value) {
 function format(ex, acc=2, max=options.max_range, type=options.notation) {
     ex = E(ex)
 
-    neg = ex.lt(0)?"-":""
+    var neg = ex.lt(0)?"-":""
     if (ex.mag == Infinity) return neg + '∞'
     if (Number.isNaN(ex.mag)) return neg + 'NaN'
     if (ex.lt(0)) ex = ex.mul(-1)
@@ -346,12 +331,13 @@ function format(ex, acc=2, max=options.max_range, type=options.notation) {
                     let slog = ex.slog()
                     return neg+(slog.gte(1e9)?'':E(10).pow(slog.sub(slog.floor())).toFixed(4)) + "F" + format(slog.floor(), 0)
                 }
-                let m = ex.div(E(10).pow(e))
-                let be = e.log10().gte(9)
-                return neg+(be?'':m.toFixed(2))+'e'+format(e, 0, max, "sc")
+                let ee = e.log10().floor(), f = Decimal.sub(5, ee).max(0).min(2).toNumber()
+                let m = ex.div(E(10).pow(e)).min(10-10**-f)
+                let be = ee.gte(6)
+                return neg+(be?'':m.toFixed(f))+'e'+format(e, 0, max, "sc")
             }
         case "st":
-            if (e.lt(max)) return format(ex, acc, max, "sc")
+            if (e.lt(max) || ex.gte("eeee10")) return format(ex, acc, max, "sc")
 
             let e3 = ex.log(1e3).floor()
             if (e3.lt(1)) {
@@ -373,7 +359,6 @@ function format(ex, acc=2, max=options.max_range, type=options.notation) {
                   if (mod1000 > 0) {
                     if (mod1000 == 1 && !ee3) final = "U"
                     if (ee3) final = FORMATS.standard.tier2(ee3) + (final ? "-" + final : "")
-                      
                     if (mod1000 > 1) final = FORMATS.standard.tier1(mod1000) + final
                   }
                   e3 = div1000
@@ -384,6 +369,9 @@ function format(ex, acc=2, max=options.max_range, type=options.notation) {
               let m = ex.div(E(10).pow(e3_mul))
               return neg+(ee.gte(10)?'':(m.toFixed(E(3).sub(e.sub(e3_mul)).toNumber())))+final
             }
+        case "log":
+          if (e.lt(max) || ex.gte("eeee10")) return format(ex, acc, max, "sc")
+          return neg+"e"+format(ex.log10(), 3, max, "log")
         default:
             return neg+FORMATS[type].format(ex, acc, max)
     }
@@ -412,12 +400,12 @@ function formatGain(a,e) {
                 if (oom.gte(1)) rated = true
             }
     
-            if (rated) return "(+" + oom.format() + " OoMs^"+tower+"/s)"
+            if (rated) return "(+" + format(oom) + " OoMs^"+tower+"/s)"
         }
     
         if (a.gte(1e100)) {
             const oom = g.div(a).log10().mul(FPS)
-            if (oom.gte(1)) return "(+" + oom.format() + " OoMs/s)"
+            if (oom.gte(1)) return "(+" + format(oom) + " OoMs/s)"
         }
     }
 
@@ -427,11 +415,22 @@ function formatGain(a,e) {
 function formatTime(ex,acc=0,type="s") {
   ex = E(ex)
   if (ex.mag == Infinity) return 'Forever'
-  if (ex.gte(31536000)) return format(ex.div(31536000).floor(),0)+" years"+(ex.div(31536000).gte(1e9) ? "" : " " + formatTime(ex.mod(31536000),acc,'y'))
-  if (ex.gte(86400)) return format(ex.div(86400).floor(),0)+" days "+formatTime(ex.mod(86400),acc,'d')
-  if (ex.gte(3600)) return format(ex.div(3600).floor(),0)+":"+formatTime(ex.mod(3600),acc,'h')
-  if (ex.gte(60)||type=="h") return (ex.div(60).gte(10)||type!="h"?"":"0")+format(ex.div(60).floor(),0)+":"+formatTime(ex.mod(60),acc,'m')
-  return (ex.gte(10)||type!="m" ?"":"0")+format(ex,acc)+(type=='s'?"s":"")
+  if (ex.gte(31536000)) {
+    return format(ex.div(31536000).floor(),0)+"y"+(ex.div(31536000).gte(1e9) ? "" : " " + formatTime(ex.mod(31536000),acc,'y'))
+  }
+  if (ex.gte(86400)) {
+    var n = ex.div(86400).floor()
+    return (n.gt(0) || type == "d"?format(ex.div(86400).floor(),0)+"d ":"")+formatTime(ex.mod(86400),acc,'d')
+  }
+  if (ex.gte(3600)) {
+    var n = ex.div(3600).floor()
+    return (n.gt(0) || type == "h"?format(ex.div(3600).floor(),0)+"h ":"")+formatTime(ex.mod(3600),acc,'h')
+  }
+  if (ex.gte(60)) {
+    var n = ex.div(60).floor()
+    return (n.gt(0) || type == "m"?format(n,0)+"m ":"")+formatTime(ex.mod(60),acc,'m')
+  }
+  return ex.gt(0) || type == "s"?format(ex,acc)+"s":""
 }
 
 function formatReduction(ex,acc) { return format(Decimal.sub(1,ex).mul(100),acc)+"%" }
