@@ -1,759 +1,98 @@
 <!DOCTYPE html>
 <html>
-  <script src="js/modules/break_eternity.js"></script>
-  <script src="js/modules/format.js"></script>
-  
-  <div id="currency">Nolan's Button Simulator v0.2</div>
-  <div class="ticker-container">
-    <div class="ticker" id="ticker"></div>
-</div>
-  <div class="menu-wrapper">
-    <button id="menu-button" onclick="changemenu(1)">Main</button>
-    <button id="menu-button" onclick="changemenu(2)"><text-style text = "ascension">Ascension</text-style></button>
-    <button id="menu-button" onclick="changemenu(3)">Options</button>
-    <button id="menu-button" onclick="changemenu(4)">Upgrades</button>
-  </div>
-  <div id="option-wrapper">
-    <button id="option-button" onclick="saveGame(1)">Save</button>
-    <button id="option-button" onclick="changeformat(1)">Standard Format</button>
-    <button id="option-button" onclick="changeformat(0)">Scientific Format</button>
-  </div>
-  <div id = "main">
-  <currency>
-    <div id="currency-container">
-
-        <!-- Currencies will be added here -->
+    <div class="ticker-container">
+        <div class="ticker" id="ticker"></div>
     </div>
- 
-
-  </currency>
-  <div id = "button-container"></div>
-  <div id = "rebirth-container"></div>
-  <div id = "ultrarebirth-container"></div>
-  <div id = "prestige-container"></div>
-  <div id = "ultraprestige-container"></div>
-  <div id = "special-container">
-    <div id = "sb0">
-      <button id = "special-button" onclick = "getfree(0)"><text-style text = "ultrarebirth">1+</text-style> Ultra Rebirth. get <text-style text = "multiplier">100x</text-style> free multiplier!</button>
-  </div>
+    <p id = "maintitle">Nolan's Button Simulator v0.2 Rewritten</p>
+    <div class = "menu-wrapper">
+        <button id = "normal-button" onclick = "changeTab(0)">Main</button>
+        <button id = "normal-button" onclick = "changeTab(1)">Options</button>
+        <button id = "normal-button" onclick = "changeTab(2)">Achievements</button>
+        <button id = "infinity-button" onclick = "changeTab(2)">Coming soon...</button>
     </div>
-    
-
-  <button id = "rank-button" onclick="upgradeRank()"></button>
-  </div>
-  <div id = "ascension">
-    <div id = "ascensioncount">You have <text-style text = "ascension">50</text-style> ascensions</div>
-    <div id = "ascensionpow">You have <text-style text = "ascension">123.4Dc</text-style> ascension power</div>
-    <div id = "ascensiontg">You would get <text-style text = "ascension">999Vec</text-style> ascensions</div>
-    <div id = "currency">At rank 10, you can ascend all your stats for ascensions, 
-      for x = ascension amount, they give ^+0.1x cash, 1e12x multiplier, 2.5e10x rebirths, 1.25e9x ultra rebirths, 500,000x prestiges, and 1,000x ultra prestiges
-    You could get up to 2.1 ascensions, but at rank 16, you can get up to 10 ascensions</div>
-      <button id = "option-button" onclick="ascend()">Ascend</button>
+    <link rel="stylesheet" href = "main.css">
 
 
-  </div>
-  <div id = "upgrades">
-
-  </div>
-
-
-  <script>
-    let options = {
-      notation: "sc",
-      max_range: 6
-    }
-    const el = id => document.getElementById(id);
-
-    let currencies = [
-      {
-        name: 'cash',
-        cname: 'cash',
-        value: new Decimal(0),
-        multipliers: [
-          new Decimal(1),
-          new Decimal(1),
-          new Decimal(1),
-          new Decimal(1),
-          new Decimal(1),
-
-
-        ],
- 
-      },
-      {
-        name: 'multiplier',
-        cname: 'multiplier',
-        value: new Decimal(0),
-        multipliers: [
-          new Decimal(1),
-          new Decimal(1),
-       
-        ],
-      },
-      {
-        name: 'rebirth',
-        cname: 'rebirths',
-        value: new Decimal(0),
-        multipliers: [
-          new Decimal(1),
-          new Decimal(1),
-        ],
-      },
-      {
-        name: 'ultrarebirth',
-        cname: 'ultra rebirths',
-        value: new Decimal(0),
-        multipliers: [
-          new Decimal(1),
-          new Decimal(1),
-        ],
-      },
-      {
-        name: 'prestige',
-        cname: 'prestiges',
-        value: new Decimal(0),
-        multipliers: [
-          new Decimal(1),
-          new Decimal(1),
-        ],
-      },
-      {
-        name: 'ultraprestige',
-        cname: 'ultra prestiges',
-        value: new Decimal(0),
-        multipliers: [
-          new Decimal(1),
-          new Decimal(1),
-        ],
-      }
-    ];
-    let layers = [
-      {
-        name: 'ascension',
-        cname: 'ascensions',
-        value: new Decimal(0),
-        power: new Decimal(0),
-        multipliers: [
-          new Decimal(1)
-        ],
-      }
-    ]
-    function reset() {
-      for (let i = currencies.length - 1; i >= 0; i--) {
-    currencies[i].value = new Decimal(0);
-    currencies[0].value = new Decimal(0);
-
-}
-
-    }
-let rank = 0;
-let menu = 1;
-let buttonessence = new Decimal(125);
-
-function changemenu(n) {
-  menu = n;
-}
-    let currencyDivs = [];
-    let buttons = [[],[],[],[],[]];
-    let buttonamounts = [10, 10, 10, 10, 10];
-    let basecosts = [new Decimal(10), new Decimal(100), new Decimal(1000), new Decimal(10000), new Decimal(100000)];
-    let basegains = [new Decimal(2.5), new Decimal(1.5), new Decimal(1.5), new Decimal(1.5), new Decimal(1.5)];
-    setInterval(function() {
-      if (rank < 11) {
- basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div(10).add(1)))];
-      } else if (rank > 10 && rank < 16) {
-
-        basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).div((rank * -1) + 16).add(1)))];
-    
-      } else {
-        basegains = [new Decimal(2.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank).add(1)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1))), new Decimal(1.5).mul(new Decimal(rank)).pow(Math.max(1, (new Decimal(rank).sub(5)).add(1)))];
-    
-      }
-
-    }, 50);
-
-    let rankcost = [[new Decimal(250000), 0],[new Decimal(1e14), 0]
-    ,[new Decimal(1e28), 0],[new Decimal(1e50), 0],[new Decimal(1e75), 0],[new Decimal(1e102), 0]
-    ,[new Decimal(1e159), 0],[new Decimal(1e243), 0],[new Decimal("1e339"), 0],[new Decimal("1e429"), 0]
-    ,[new Decimal("1e800"), 0],[new Decimal("1e1330"), 0],[new Decimal("1e1830"), 0],[new Decimal("1e2660"), 0],
-    [new Decimal("1e7100"), 0],
-    [new Decimal("1e15400"), 0],
-    [new Decimal("1e24400"), 0],
-    [new Decimal("1e26900"), 0],
-    [new Decimal("1e35000"), 0],
-    [new Decimal("1e75000"), 0],
-    [new Decimal("e1.798e308"), 0]];
-
-
-
-    function createGUI() {
-      let currencyContainer = el("currency-container");
-      for (let i = 0; i < currencies.length; i++) {
-        let currencyDiv = document.createElement("div");
-        currencyDiv.id = "currency";
-        currencyDiv.className = "currency";
-        currencyDiv.innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].cname; 
-        currencyContainer.appendChild(currencyDiv); // Append to the container
-        currencyDivs.push(currencyDiv); // Store the divs for later updates
-      }
-    }
-
-    function createButtons() {
-let buttonContainer = el("button-container");
-for (let i = 0; i < 10; i++) {
-let button = document.createElement("button");
-button.id = "multiplier-button";
-button.innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1)) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
-buttonContainer.appendChild(button);
-buttons[0].push(button);
-button.onclick = function(){
-buymulti(basecosts[0].pow(i+1), basegains[0].pow(i+1));
-
-}; }// Append to the container
-
-for (let i = 0; i < 10; i++) {
-  let buttonContainer2 = el("rebirth-container");
-let button = document.createElement("button");
-button.id = "rebirth-button";
-button.innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1)) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
-buttonContainer2.appendChild(button);
-buttons[1].push(button);
-button.onclick = function(){
-buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
-
-};
-}
-
-
-
-    }
-   
-
-  function createurbuttons() {
-    if (rank > 0 && buttons[2].length == 0) {
-  for (let i = 0; i < 10; i++) {
-
-  let buttonContainer3 = el("ultrarebirth-container");
-let button = document.createElement("button");
-button.id = "ultrarebirth-button";
-button.innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1)) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
-buttonContainer3.appendChild(button);
-buttons[2].push(button);
-button.onclick = function(){
-buyureb(basecosts[2].pow(i+1), basegains[2].pow(i+1));
-
-};
-  }
-}
-  }
-  function createprbuttons() {
-    if (rank > 2 && buttons[3].length == 0) {
-  for (let i = 0; i < 20; i++) {
-
-  let buttonContainer3 = el("prestige-container");
-let button = document.createElement("button");
-button.id = "prestige-button";
-button.innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1)) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
-buttonContainer3.appendChild(button);
-buttons[3].push(button);
-button.onclick = function(){
-buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
-
-};
-  }
-}
-  }
-
-
-  function createNewButtons(s, a, b) {
-let buttonContainer = el("button-container");
-if (b == 0) {
-for (let i = s; i < s + a; i++) {
-let button = document.createElement("button");
-button.id = "multiplier-button";
-button.innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1)) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
-buttonContainer.appendChild(button);
-buttons[0].push(button);
-button.onclick = function(){
-  if(!rank >= 18) {
-buymulti(basecosts[0].pow(i+1), basegains[0].pow(i+1));
-  } else {
-    buymulti(basecosts[0].pow(new Decimal(buttonessence).add(1)), basegains[0].pow(new Decimal(buttonessence).add(1)));
-  }
-
-}; }
-}
-if (b == 1) {
-for (let i = s; i < s + a; i++) {
-  let buttonContainer2 = el("rebirth-container");
-let button = document.createElement("button");
-button.id = "rebirth-button";
-button.innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1)) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
-buttonContainer2.appendChild(button);
-buttons[1].push(button);
-button.onclick = function(){
-  if(!rank >= 18) {
-  
-  buyreb(basecosts[1].pow(i+1), basegains[1].pow(i+1));
-  } else {
-    buyreb(basecosts[1].pow(new Decimal(buttonessence).add(1)), basegains[1].pow(new Decimal(buttonessence).add(1)));
-  }
-
-
-};
-}
-}
-if (b == 2) {
-    if (rank > 0) {
-  for (let i = s; i < s + a; i++) {
-
-  let buttonContainer3 = el("ultrarebirth-container");
-let button = document.createElement("button");
-button.id = "ultrarebirth-button";
-button.innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1)) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
-buttonContainer3.appendChild(button);
-buttons[2].push(button);
-button.onclick = function(){
-  if(!rank >= 18) {
-  
-  buyureb(basecosts[2].pow(i+1), basegains[2].pow(i+1));
-  } else {
-    buyureb(basecosts[2].pow(new Decimal(buttonessence).add(1)), basegains[2].pow(new Decimal(buttonessence).add(1)));
-  }
-
-
-};
-  }
-}
-}
-if (b == 3) {
-    if (rank > 2) {
-  for (let i = s; i < s + a; i++) {
-
-    let buttonContainer3 = el("prestige-container");
-let button = document.createElement("button");
-button.id = "prestige-button";
-button.innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1)) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
-buttonContainer3.appendChild(button);
-buttons[3].push(button);
-button.onclick = function(){
-  if(!rank >= 18) {
-  
-  buypres(basecosts[3].pow(i+1), basegains[3].pow(i+1));
-  } else {
-    buypres(basecosts[3].pow(new Decimal(buttonessence).add(1)), basegains[3].pow(new Decimal(buttonessence).add(1)));
-  }
-
-};
-  }
-}
-}
-
-  
-  }
-
-    
-
-
-
-
-    function updateGUI() {
-      for (let i = 0; i < currencies.length; i++) {
-        if (currencies[i].name == 'multiplier') { 
-          
-        currencyDivs[i].innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "x" + "</text-style> " + currencies[i].name;
-        } else {
-          currencyDivs[i].innerHTML = "You have <text-style text=\"" + currencies[i].name + "\">" + format(currencies[i].value) + "</text-style> " + currencies[i].name;
-        }
-
-
-for (let i = 0; i < buttons.length; i++) {
-
-if (buttonamounts[i] !== buttons[i].length) {
-  buttons[i] = [];
-  if (i == 0) {
-    el("button-container").innerHTML = "";
-  } else {
-    el(currencies[i + 1].name + "-container").innerHTML = "";
-
-  }
-createNewButtons(0, buttonamounts[i], i);
-
-}
-}
-
+<div id = "main">
+    <br>
+    <div id = "rank">
+        <div id = "rank1">
+            <p id = "rank-amount">Rank 1</p>
+        <button id = "rank-button" onclick="upgradeRank()"></button>
       
-      }
-      for (let i = 0; i < buttons[0].length; i++) {
-        if (!rank >= 18) {
-buttons[0][i].innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(i+1).mul(currencytotalmulti[1])) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(i+1)) + "</text-style> cash"; 
-        } else {
-          buttons[0][i].innerHTML = "Buy <text-style text=\"" + "multiplier" + "\">" + format(basegains[0].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[1])) + "x</text-style> multiplier " + "for" + "<text-style text=\"" + "cash" + "\">" + format(basecosts[0].pow(new Decimal(buttonessence).add(1))) + "</text-style> cash"; 
+    </div>
+    <div id = "tier1">
+        <p id = "tier-amount">Tier 0</p>
+    <button id = "tier-button" onclick = "upgradeTier()">Coming soon....</button>
+ 
+</div>
+</div>
+<div id = "currencies">
+    <p id = "cash"></p>
+    <p id = "multiplier"></p>
+    <p id = "rebirth"></p>
+    <p id = "ultrarebirth"></p>
+</div>
+<div id = "multiplier-buttons"></div>
+<div id = "rebirth-buttons"></div>
+<div id = "ultrarebirth-buttons"></div>
+</div>
 
+
+<div id = "options">
+    <h1>Notations</h1>
+ <div class = "optionsrow">
+        <button onclick = "changeNotation('st')">Standard</button>
+        <button onclick = "changeNotation('sc')">Scientific</button>
+        <button onclick = "changeNotation('mixed_sc')">Mixed Scientific</button>
+        <button onclick = "changeNotation('log')">Logarithm</button>
+    </div>
+    <h1>Save/Load</h1>
+    <div class = "optionsrow">
+           <button onclick = 'exportSave()'>Export to clipboard</button>
+           <button onclick = 'importSave()'>Import</button>
+           <button>Save</button>
+           <button class = "wipe" onclick = 'wipeSave()'>WIPE!!!!!!!!!!!!!!</button>
+       </div>
+       <h1>Other</h1>
+       <div class = "optionsrow">
+        <button>Support the developer on CashApp!</button>
+        <button>Support the developer on PayPal!</button>
+        <button onclick="window.location.href='https://www.patreon.com/user/membership?u=69601181';">Support the developer on Patreon!</button>
+       </div>
+       
+
+
+</div>
+<div class = "achievements" id = "achievements">
+    <div class = "achievements" id = "achievements1"> </div>
+ <div class = "achievements" id = "achievements2"> </div>
+ <div class = "achievements" id = "achievements3"> </div>
+</div>
+<body></body>
+<footer>
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+        <span id="progressText" class="progress-text">0%</span>
+    </div>
+</footer>
+    <script>
+        let options = {
+          notation: "sc",
+          max_range: 6
         }
-        if (currencies[0].value.gte(basecosts[0].pow(i+1))) {
-  buttons[0][i].id = "multiplier-button";
-
-} else {
-  buttons[0][i].id = "multiplier-button-cant";
-
-}
-    }
-    for (let i = 0; i < buttons[1].length; i++) {
-if (!rank >= 18) {
-buttons[1][i].innerHTML = "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(i+1).mul(currencytotalmulti[2])) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(i+1)) + "x</text-style> multiplier"; 
-        } else {
-          buttons[1][i].innerHTML =      "Buy <text-style text=\"" + "rebirth" + "\">" + format(basegains[1].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[2])) + "</text-style> rebirths " + "for" + "<text-style text=\"" + "multiplier" + "\">" + format(basecosts[1].pow(new Decimal(buttonessence).add(1))) + "x</text-style> multiplier"; 
-        }
-if (currencies[1].value.gte(basecosts[1].pow(i+1))) {
-  buttons[1][i].id = "rebirth-button";
-
-} else {
-  buttons[1][i].id = "rebirth-button-cant";
-
-}
-    }
-
-    for (let i = 0; i < buttons[2].length; i++) {
-if (!rank >= 18) {
- buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(i+1).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(i+1)) + "</text-style> rebirths"; 
-} else {
-  buttons[2][i].innerHTML = "Buy <text-style text=\"" + "ultrarebirth" + "\">" + format(basegains[2].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[3])) + "</text-style> ultra rebirths " + "for " + "<text-style text=\"" + "rebirth" + "\">" + format(basecosts[2].pow(new Decimal(buttonessence).add(1))) + "</text-style> rebirths"; 
-}
-
-if (currencies[2].value.gte(basecosts[2].pow(i+1))) {
-  buttons[2][i].id = "ultrarebirth-button";
-
-} else {
-  buttons[2][i].id = "ultrarebirth-button-cant";
-
-}
-    }
-    for (let i = 0; i < buttons[3].length; i++) {
-
-      if (!rank >= 18) {
-        buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(i+1).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(i+1)) + "</text-style> ultra rebirths"; 
-      } else {
-        buttons[3][i].innerHTML = "Buy <text-style text=\"" + "prestige" + "\">" + format(basegains[3].pow(new Decimal(buttonessence).add(1)).mul(currencytotalmulti[4])) + "</text-style> prestiges " + "for " + "<text-style text=\"" + "ultrarebirth" + "\">" + format(basecosts[3].pow(new Decimal(buttonessence).add(1))) + "</text-style> ultra rebirths"; 
-      }
-      if (currencies[3].value.gte(basecosts[3].pow(i+1))) {
-  buttons[3][i].id = "prestige-button";
-
-} else {
-  buttons[3][i].id = "prestige-button-cant";
-
-}
-
-    }
-
-    el("rank-button").innerHTML = "Upgrade to rank " + (rank + 1) + " for <text-style text = " + currencies[rankcost[rank][1]].name + ">" + format(rankcost[rank][0]) + "</text-style> "   + currencies[rankcost[rank][1]].name;
-;
-if (rank > 0) {
-  el("sb0").style.display = "block";
-} else {
-  el("sb0").style.display = "none";
-}
-
-if (menu == 1) {
-  el("main").style.display = "block";
-} else {
-  el("main").style.display = "none";
-}
-if (menu == 2) {
-  el("ascension").style.display = "block";
-} else {
-  el("ascension").style.display = "none";
-}
-if (rank > 2) {
-  el("prestige-container").style.display = "block";
-} else {
-  el("prestige-container").style.display = "none";
-}
-
-if (menu == 3) {
-  el("option-wrapper").style.display = "block";
-} else {
-  el("option-wrapper").style.display = "none";
-
-}
-
-if (menu == 4) {
-  el("upgrades").style.display = "block";
-} else {
-  el("upgrades").style.display = "none";
-
-}
-el("ascensioncount").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].value) + "</text-style> " + layers[0].name + "s";
-el("ascensionpow").innerHTML = "You have <text-style text = " + layers[0].name + ">" + format(layers[0].power) + "</text-style> " + "ascension power";
-el("ascensiontg").innerHTML = "You would get <text-style text = " + layers[0].name + ">" + format(Math.max(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value), 0)) + "</text-style> " + "ascensions";
-
-  }
-
-
-    createGUI();
-
-
-let currencytotalmulti = [
-getTotalMultiplier(0),
-getTotalMultiplier(1),
-getTotalMultiplier(2),
-getTotalMultiplier(3),
-getTotalMultiplier(4),
-
-
-
-
-];
-function getstatmulti() {
-currencies[0].multipliers[0] = currencies[1].value.add(1);
-if (currencies[0].value.pow(layers[0].value.div(10)).gte("e10000")) {
-currencies[0].multipliers[1] = new Decimal("e10000")
-} else {
-  currencies[0].multipliers[1] = currencies[0].value.pow(layers[0].value.div(10))
-}
-currencies[0].multipliers[2] = currencies[3].value.add(1);
-currencies[1].multipliers[0] = currencies[2].value.add(1);
-currencies[1].multipliers[1] = layers[0].value.mul(1e12).add(1);
-currencies[2].multipliers[0] = currencies[3].value.mul(3).add(1);
-currencies[2].multipliers[1] = layers[0].value.mul(2.5e10).add(1);
-currencies[3].multipliers[0] = currencies[4].value.mul(5).add(1);
-currencies[3].multipliers[1] = layers[0].value.mul(1.25e9).add(1);
-currencies[4].multipliers[1] = layers[0].value.mul(500000).add(1);
-if (rank > 13) {
-  currencies[0].multipliers[3] = currencies[2].value.add(1);
-  currencies[1].multipliers[2] = currencies[4].value.add(1);
-} else { 
-  currencies[1].multipliers[2] = new Decimal(1);
-}
-
-currencies[1].multipliers[3] = new Decimal(1);
-
-
-
-
-
-
-
-
-}
-
-    setInterval(function() {
-      currencies[0].value = currencies[0].value.add(currencytotalmulti[0].mul(0.01))
-      layers[0].power = new Decimal(1).mul(currencies[0].value.add(1)).mul(currencies[1].value.add(1)).mul(currencies[2].value.add(1)).mul(currencies[3].value.add(1));
-
-      updateGUI(); 
-      currencytotalmulti[0] = getTotalMultiplier(0);
-      currencytotalmulti[1] = getTotalMultiplier(1);
-      currencytotalmulti[2] = getTotalMultiplier(2);
-      currencytotalmulti[3] = getTotalMultiplier(3);
-      currencytotalmulti[4] = getTotalMultiplier(4);
-
-      getstatmulti();
-      // Update the GUI
-    }, 10);
-
-    function getTotalMultiplier(a) {
-      let total = new Decimal(1);
-
-for (i = 0; i < currencies[a].multipliers.length; i++) {
-total = total.mul(currencies[a].multipliers[i]);
-
-     }
-return total;
-
-
-    }
-
-function buymulti(c, a) {
-if (currencies[0].value.gte(c)) {
-currencies[0].value = currencies[0].value.sub(c);
-currencies[1].value = currencies[1].value.add(a.mul(currencytotalmulti[1]));
-
-
-}
-}function buyreb(c, a) {
-if (currencies[1].value.gte(c)) {
-currencies[0].value = new Decimal(0);
-currencies[1].value = new Decimal(0);
-
-
-currencies[2].value = currencies[2].value.add(a.mul(currencytotalmulti[2]));
-
-
-}
-}
-function buyureb(c, a) {
-if (currencies[2].value.gte(c)) {
-currencies[0].value = new Decimal(0);
-currencies[1].value = new Decimal(0);
-currencies[2].value = new Decimal(0);
-
-
-currencies[3].value = currencies[3].value.add(a.mul(currencytotalmulti[3]));
-
-
-}
-}
-function buypres(c, a) {
-if (currencies[3].value.gte(c)) {
-currencies[0].value = new Decimal(0);
-currencies[1].value = new Decimal(0);
-currencies[2].value = new Decimal(0);
-currencies[3].value = new Decimal(0);
-
-
-currencies[4].value = currencies[4].value.add(a.mul(currencytotalmulti[4]));
-
-
-}
-}
-
-function upgradeRank() {
-  
-if (currencies[rankcost[rank][1]].value.gte(rankcost[rank][0])) 
- {
-  if (confirm("Are you sure you want to upgrade to rank " + (rank + 1) + "?")) {
-
-reset();
-rank++;
-if (rank > 1) {
-for (let i = 0; i < 9; i++) {
-if (rank < 18) {
-buttonamounts[i] += 5;
-}
-if (rank >= 18) {
-  buttonamounts[i] = 1;
-if (rank > 18) {
-  buttonessence = buttonessence.add(rank)
-
-}
-
-}
-}
-  }
-
-  
-}
-
-} else {
-  alert("You do not have enough " + currencies[rankcost[rank][1]].name + " to upgrade to rank " + (rank + 1) + ". Get some more, and come back later!");
-}
-}
-
-function getfree(a) {
-if (a == 0) {
-  if (currencies[3].value.gte(1)) {
-  currencies[1].value = currencies[1].value.add(100);
-
-  }
-}
-}
-
-// Add these functions to your existing JavaScript code
-
-// Function to save the game state
-// Function to save the game state
-function saveGame(s) {
-    const gameState = {
-        currencies: currencies,
-        layers: layers,
-        rank: rank,
-        buttonamounts: buttonamounts,
-        buttonessence: buttonessence  // Add buttonessence to the saved state
-    };
-    localStorage.setItem('buttonSimulatorSave', JSON.stringify(gameState));
-    if (s == 1) {alert("Game saved!");}
-}
-
-// Function to load the game state
-function loadGame() {
-    const savedState = localStorage.getItem('buttonSimulatorSave');
-    if (savedState) {
-        const gameState = JSON.parse(savedState);
-        currencies = gameState.currencies.map(currency => ({
-            ...currency,
-            value: new Decimal(currency.value),
-            multipliers: currency.multipliers.map(m => new Decimal(m))
-        }));
-        layers = gameState.layers.map(layer => ({
-            ...layer,
-            value: new Decimal(layer.value),
-            power: new Decimal(layer.power),
-            multipliers: layer.multipliers.map(m => new Decimal(m))
-        }));
-        rank = gameState.rank;
-        buttonamounts = gameState.buttonamounts;
-        buttonessence = new Decimal(gameState.buttonessence);  // Load buttonessence and convert to Decimal
-
-        // Recreate the GUI to reflect loaded state
-        el("currency-container").innerHTML = '';
-        el("button-container").innerHTML = '';
-        el("rebirth-container").innerHTML = '';
-        el("ultrarebirth-container").innerHTML = '';
-        el("prestige-container").innerHTML = '';
-        currencyDivs = [];
-        buttons = [[],[],[],[],[]];
-        createGUI();
-        
-        updateGUI();
-    }
-}
-
-
-
-
-
-// Auto-save every 30 seconds
-setInterval(saveGame, 500);
-
-// Load the game when the page loads
-window.onload = function() {
-    loadGame();
-};
-
-function ascend() {
-  if (rank > 9) {
-  layers[0].value = layers[0].value.add(Math.max(layers[0].power.log10().pow(0.5).div(17.6).sub(layers[0].value), 0));
-  reset();
-  currencies[0].value = new Decimal(0);
-  buttonessence = new Decimal(125);
-  buttonamounts = [10,10,10,10,10];
-  
-  if (rank < 16) {
-    if (layers[0].value.gte(2.1)) {
-      layers[0].value = new Decimal(2.1);
-
-    }
-  } else if (rank >= 16) {
-    if (layers[0].value.gte(10)) {
-      layers[0].value = new Decimal(10);
-
-    }
-  }
-  rank = 0;
-}
-
-
-
-
-}
-
-// Add a manual save button (optional)
-
-function changeformat(f) {
-if (f == 0) {
-  options.notation= "sc";
-
-}
-if (f == 1) {
-  options.notation = "st";
-
-}
-}
-  </script>
-
-  <link rel="stylesheet" href="styles/main.css">
-  <script src = "js/upgrades.js"></script>
-  <script src = "js/news.js"></script>
-
+        const el = id => document.getElementById(id);
+        const changeTab = i => tab = i;
+        const changeNotation = i => options.notation = i;
+        </script>
+
+        <script src = "js/modules/break_eternity.js"></script>
+        <script src = "js/modules/format.js"></script>
+        <script src = "js/news.js"></script>
+        <script src = "js/tabs.js"></script>
+        <script src = "js/modules/progress-bar.js"></script>
+        <script src = "js/modules/data.js"></script>
+        <script src = "js/element.js"></script>
+        <script src = "js/rank.js"></script>
+        <script src = "js/achievements.js"></script>
 </html>
