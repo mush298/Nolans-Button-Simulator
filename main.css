@@ -1,4 +1,4 @@
-p, h1, .progress-text {
+p, h1, h2, .progress-text {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif
 }
@@ -103,11 +103,18 @@ button {
     border-color: black;
     color: black;
 }
-#infinity-button {
+#infinity-button, #infinity-button1, #infinity-button2, .infinity-button {
 
     color: orange; /* White */
    
     border-color: orange;
+    
+}
+.infinity-button-bought {
+
+    color: darkorange; /* White */
+   
+    border-color: darkorange;
     
 }
 #eternity-button {
@@ -154,7 +161,7 @@ button {
     background-color: red;
     border-color: darkred;
 }
-.menu-wrapper, .optionsrow, #rank {
+.menu-wrapper, .optionsrow, #rank, #bct, #infinity-upgrades {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -174,9 +181,10 @@ button {
 html, body {
  
    
-        overflow-x: hidden; /* Hide horizontal scrollbar */
-      /* Hide horizontal scrollbar */
+        overflow-x: hidden;
+   color: black;
 }
+
 
 .ticker {
     white-space: nowrap;
@@ -243,8 +251,8 @@ text-style {
     &[text="ultraprestige"] {
         color:rgb(255, 196, 0);
     };
-    &[text="ascension"] {
-        background: radial-gradient(circle, #68e700 0%, #0b6308 100%);
+    &[text="infinity"] {
+        background: radial-gradient(circle, orange 0%, darkorange 100%);
         filter: drop-shadow(1px 1px black) drop-shadow(0px 0px 1px black);
         text-shadow: none;
        -webkit-background-clip: text;
@@ -279,31 +287,132 @@ text-style {
     };
    
 };
+
+
+.achievements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.achievement-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px, 10px;
+    width: 100%;
+}
+
 .achievement, .achievement-got {
-   
-   
-    position: relative;
+    width: 100px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 5px;
+    font-size: 12px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .achievement {
-    width: 100px;    
-    height: 100px;  
-    background-color: white;
-    color: black;
+    background-color: #e0e0e0;
+    color: #333;
 }
 
 .achievement-got {
-    background-color: green;
+    background-color: #4CAF50;
     color: white;
-    width: 100px;    
-    height: 100px;
 }
 
-.achievements {
+.achievement:hover, .achievement-got:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .achievement-row {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+}
+:root {
+    --bg-color: white;
+    --text-color: black;
+    --button-bg: white;
+    --button-text: black;
+    --achievement-bg: #e0e0e0;
+    --achievement-text: #333;
+    --achievement-got-bg: #4CAF50;
+    --achievement-got-text: white;
+    --progress-bg: #6d4444;
+    --progress-bar-bg: #4CAF50;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --button-bg: #333;
+    --button-text: #e0e0e0;
+    --achievement-bg: #333;
+    --achievement-text: #e0e0e0;
+    --achievement-got-bg: #1b5e20;
+    --achievement-got-text: #e0e0e0;
+    --progress-bg: #4a3636;
+    --progress-bar-bg: #388e3c;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+p, h1, h2, .progress-text {
     text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-color);
+}
+
+#maintitle {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+button, #rank-button, #tier-button, #normal-button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border-color: var(--text-color);
+}
+
+.ticker-container {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border-color: var(--text-color);
+}
+
+.progress-container {
+    background-color: var(--progress-bg);
+}
+
+.progress-bar {
+    background-color: var(--progress-bar-bg);
+}
+
+.achievement {
+    background-color: var(--achievement-bg);
+    color: var(--achievement-text);
+}
+
+.achievement-got {
+    background-color: var(--achievement-got-bg);
+    color: var(--achievement-got-text);
 }
