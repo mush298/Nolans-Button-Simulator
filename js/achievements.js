@@ -207,6 +207,160 @@ let achievements = {
             return  player.tier > 0;
         }
     },
+    23: {
+        name: "The beginning of inflation",
+        row: 3,
+        id: "36",
+        desc: "Get 1.00e933 cash",
+        check() {
+            return player.currencies[0].value.gte('1e933');
+        }
+    },
+    24: {
+        name: "Another tier!",
+        row: 3,
+        id: "37",
+        desc: "Upgrade to tier 2",
+        check() {
+            return  player.tier > 1;
+        }
+    },
+    25: {
+        name: "Millillionaire",
+        row: 3,
+        id: "38",
+        desc: "Get 1.00e3003 cash",
+        check() {
+            return player.currencies[0].value.gte('1e3003');
+        }
+    },
+    26: {
+        name: "The true beginning of inflation",
+        row: 3,
+        id: "39",
+        desc: "Upgrade to tier 3",
+        check() {
+            return  player.tier > 2;
+        }
+    },
+    27: {
+        name: "Tier 4 on the floor",
+        row: 4,
+        id: "41",
+        desc: "Upgrade to tier 4",
+        check() {
+            return  player.tier > 3;
+        }
+    },
+    28: {
+        name: "Micrillionaire",
+        row: 4,
+        id: "42",
+        desc: "Get 1.00e3.000M cash",
+        check() {
+            return  player.currencies[0].value.gte('1e3000003');
+        }
+    },
+    29: {
+        name: "Tier 5: inflation",
+        row: 4,
+        id: "43",
+        desc: "Upgrade to tier 5",
+        check() {
+            return  player.tier > 4;
+        }
+    },
+    30: {
+        name: "Tier 6",
+        row: 4,
+        id: "44",
+        desc: "Upgrade to tier 6",
+        check() {
+            return  player.tier > 5;
+        }
+    },
+    31: {
+        name: "Tier 7, the saga",
+        row: 4,
+        id: "45",
+        desc: "Upgrade to tier 7",
+        check() {
+            return  player.tier > 6;
+        }
+    },
+    32: {
+        name: "Infinity II",
+        row: 4,
+        id: "46",
+        desc: "Get e9e15 cash, Reward: 100,000x cash, and auto rank up!",
+        check() {
+            return  player.currencies[0].value.gte('e9e15');
+        }
+    },
+    33: {
+        name: "Now REALLY all that progress is gone!",
+        row: 4,
+        id: "47",
+        desc: "Infinity for the first time, Reward: 100,000x cash!",
+        check() {
+            return  player.infinity.times.gte(1)
+        }
+    },
+    34: {
+        name: "A limit upgrade!",
+        row: 4,
+        id: "48",
+        desc: "Upgrade the infinity limit to level 1",
+        check() {
+            return  player.infinity.limit_level.gte(1)
+        }
+    },
+    35: {
+        name: "Where buttons go?????",
+        row: 4,
+        id: "49",
+        desc: "Purchase the first infinity upgrade",
+        check() {
+            return hasInfinityUpgrade(0)
+        }
+    },
+    36: {
+        name: "The thirty-seventh achievement",
+        row: 5,
+        id: "51",
+        desc: "Get 1,000 infinity points, AHH 37 IS SCARY (I have septitriacontaphobia)",
+        check() {
+            return player.infinity.points.gte(1000)
+        }
+    },
+    37: {
+        name: "Inflation 2: the sequel",
+        row: 5,
+        id: "52",
+        desc: "Purchase the fifth infinity upgrade",
+        check() {
+            return hasInfinityUpgrade(4)
+        }
+    },
+    38: {
+        name: "Attillionaire",
+        row: 5,
+        id: "53",
+        desc: "Get e3e18 cash",
+        check() {
+            return player.currencies[0].value.gte('e3e18')
+        }
+    },
+    39: {
+        name: "Infinity multimillionaire",
+        row: 5,
+        id: "54",
+        desc: "Get 100,000,000 infinity points",
+        check() {
+            return player.infinity.points.gte(1e8)
+        }
+    },
+
 };
 
 function setupAchievements() {
@@ -252,6 +406,24 @@ function checkAchievements() {
         }
         if (achievements[i].id == '33') {
             achievements_array[i].title = "Get " + format(E(2).pow(1024)) + " cash";
+        }
+        if (achievements[i].id == '36') {
+            achievements_array[i].title = "Get " + format('1e933') + " cash";
+        }
+        if (achievements[i].id == '38') {
+            achievements_array[i].title = "Get " + format('1e3003') + " cash";
+        }
+        if (achievements[i].id == '42') {
+            achievements_array[i].title = "Get " + format('1e3000003') + " cash";
+        }
+        if (achievements[i].id == '46') {
+            achievements_array[i].title = "Get " + format('e9e15') + " cash";
+        }
+        if (achievements[i].id == '53') {
+            achievements_array[i].title = "Get " + format('e3e18') + " cash";
+        }
+        if (achievements[i].id == '54') {
+            achievements_array[i].title = "Get " + format('1e8') + " infinity points";
         }
         if (achievements[i].check() && !player.achievements.includes(achievements[i].id)) {
             player.achievements.push(achievements[i].id);
