@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html class = "dark-mode">
     <div class="ticker-container">
-        <div class="ticker" id="ticker"></div>
+        <div class ="ticker" id="ticker"></div>
     </div>
-    <p id = "maintitle">Nolan's Button Simulator v0.2 Rewritten</p>
+    <div id = "prestige-infinity">
+        <p id = "infinitypoint">0 Infinity Points</p>
+        <div id = "bct">
+        <button id = "infinity-button1" onclick = "goInfinite()">Go Infinite</button>
+    </div>
+    </div>
+    <p id = "maintitle">Nolan's Button Simulator v0.3</p>
     <div class = "menu-wrapper">
         <button id = "normal-button" onclick = "changeTab(0)">Main</button>
         <button id = "normal-button" onclick = "changeTab(1)">Options</button>
         <button id = "normal-button" onclick = "changeTab(2)">Achievements</button>
-        <button id = "infinity-button" onclick = "changeTab(2)">Coming soon...</button>
+        <button class = "infinity-button" id = "infinity-tab-button" onclick = "changeTab(3)">Infinity</button>
     </div>
     <link rel="stylesheet" href = "main.css">
 
@@ -59,15 +65,71 @@
         <button>Support the developer on CashApp!</button>
         <button>Support the developer on PayPal!</button>
         <button onclick="window.location.href='https://www.patreon.com/user/membership?u=69601181';">Support the developer on Patreon!</button>
+        <button onclick="window.location.href='https://discord.gg/hwvAKudrET';">Join the discord!</button>
+        <button id = "dm">dark mode</button>
        </div>
-       
+       <h1>Confirmations</h1>
+       <div class = "optionsrow">
+        <button id = "rankconfirm" onclick = "toggleConfirm('options.confirmations.rank')">
+            Rank: Off
+        </button>
+        <button id = "tierconfirm" onclick = "toggleConfirm('options.confirmations.tier')">
+            Tier: Off
+        </button>
+        <button id = "infinityconfirm" onclick = "toggleConfirm('options.confirmations.infinity')">
+            Tier: Off
+        </button>
+
+       </div>
 
 
 </div>
 <div class = "achievements" id = "achievements">
-    <div class = "achievements" id = "achievements1"> </div>
- <div class = "achievements" id = "achievements2"> </div>
- <div class = "achievements" id = "achievements3"> </div>
+    <br>
+    <div class = "achievement-row" id = "achievements1"> </div>
+ <div class = "achievement-row" id = "achievements2"> </div>
+ <div class = "achievement-row" id = "achievements3"> </div>
+ <div class = "achievement-row" id = "achievements4"> </div>
+ <div class = "achievement-row" id = "achievements5"> </div>
+ <div class = "achievement-row" id = "achievements6"> </div>
+</div>
+<div id = "infinity">
+    <p id = "infinitypoint2">You have 0 infinity points</p>
+    <h2 id = "infinitylimit">The infinity limit is currently <text-style text = "infinity">TFm</text-style></h2>
+    <div id = "bct">
+    <button id = "infinity-button2" onclick = "buyLimit()">Upgrade the limit to DcFm for <text-style text = "infinity">1</text-style> infinity points</button>
+
+    </div>
+    <br>
+    <div id = "bct">
+        
+            <button class = "infinity-button" id = "iu0" onclick = "buyInfinityUpgrade(0)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+            
+    </div>
+    <div id = "bct">
+        <button class = "infinity-button" id = "iu1" onclick = "buyInfinityUpgrade(1)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+
+    </div>
+    <div id = "bct">
+        <button class = "infinity-button" id = "iu2" onclick = "buyInfinityUpgrade(2)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+
+    </div>
+    <div id = "bct">
+        <button class = "infinity-button" id = "iu3" onclick = "buyInfinityUpgrade(3)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+
+    </div>
+    <div id = "bct">
+        <button class = "infinity-button" id = "iu4" onclick = "buyInfinityUpgrade(4)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+
+    </div>
+    <div id = "bct">
+        <button class = "infinity-button" id = "iu5" onclick = "buyInfinityUpgrade(5)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+
+    </div>
+    <div id = "bct">
+        <button class = "infinity-button" id = "iu6" onclick = "buyInfinityUpgrade(6)">Automatically gain multiplier but remove multiplier buttons (Cost: <text-style text = "infinity">3</text-style> infinity points)</button>
+
+    </div>
 </div>
 <body></body>
 <footer>
@@ -77,22 +139,67 @@
     </div>
 </footer>
     <script>
-        let options = {
-          notation: "sc",
-          max_range: 6
-        }
+       
         const el = id => document.getElementById(id);
         const changeTab = i => tab = i;
         const changeNotation = i => options.notation = i;
+     
+        const darkModeToggle = el("dm");
+const root = document.documentElement;
+
+function updateDarkModeButton() {
+    if (root.classList.contains('dark-mode')) {
+        darkModeToggle.textContent = "Light Mode";
+    } else {
+        darkModeToggle.textContent = "Dark Mode";
+    }
+}
+
+darkModeToggle.addEventListener('click', () => {
+    root.classList.toggle('dark-mode');
+    updateDarkModeButton();
+});
+
+// Initial call to set the correct text when the page loads
+updateDarkModeButton();
+
         </script>
 
         <script src = "js/modules/break_eternity.js"></script>
         <script src = "js/modules/format.js"></script>
+        <script src = "js/modules/data.js"></script>
+        <script>
+            let options = player.options
+        </script>
         <script src = "js/news.js"></script>
         <script src = "js/tabs.js"></script>
-        <script src = "js/modules/progress-bar.js"></script>
-        <script src = "js/modules/data.js"></script>
+      <script src = "js/modules/progress-bar.js"></script>
         <script src = "js/element.js"></script>
         <script src = "js/rank.js"></script>
         <script src = "js/achievements.js"></script>
+        <script src = "js/infinity/infinity.js"></script>
+        <script>
+         function updateConfirmText() {
+    const button = document.getElementById('rankconfirm');
+    button.textContent = `Rank: ${player.options.confirmations.rank ? 'On' : 'Off'}`;
+    const button1 = document.getElementById('tierconfirm');
+    button1.textContent = `Tier: ${player.options.confirmations.tier ? 'On' : 'Off'}`;
+    const button2 = document.getElementById('infinityconfirm');
+    button2.textContent = `Infinity: ${player.options.confirmations.infinity ? 'On' : 'Off'}`;
+}
+
+function toggleConfirm(optionPath) {
+    let option = player;
+    const path = optionPath.split('.');
+    for (let i = 0; i < path.length - 1; i++) {
+        option = option[path[i]];
+    }
+    option[path[path.length - 1]] = !option[path[path.length - 1]];
+    updateConfirmText(); // Call this immediately after toggling
+}
+
+// Set up the interval correctly
+setInterval(updateConfirmText, 100);
+        </script>
+      
 </html>
