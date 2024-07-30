@@ -19,7 +19,7 @@ function upgradeRank() {
     player.rank += 1;
     reset()
     } else {
-        alert("You don't have enough cash to upgrade your rank!")
+        
     }
 }
 } else {
@@ -27,7 +27,7 @@ function upgradeRank() {
     player.rank += 1;
     reset()
     } else {
-        alert("You don't have enough cash to upgrade your rank!")
+    
     }
 }
 }
@@ -40,7 +40,7 @@ function upgradeTier() {
     player.rank = 0;
     reset()
     } else {
-        alert("Your rank isn't high enough to upgrade your tier!")
+     
     }
 }
 } else {
@@ -49,7 +49,7 @@ function upgradeTier() {
         player.rank = 0;
         reset()
         } else {
-            alert("Your rank isn't high enough to upgrade your tier!")
+        
         }
 }
 }
