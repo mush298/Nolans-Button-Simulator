@@ -65,5 +65,10 @@ if (player.infinity.times.gte(1)) {
         el('infinity-tab-button').style.display = "none"
          el("infinityconfirm").style.display = "none"
     }
+    if (player.options.confirmations.ticker) {
+el('ticker-container').style.display = "block"
+    } else {
+el('ticker-container').style.display = "none"
+    }
 }
 setInterval(updateTabs, 50);
