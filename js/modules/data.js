@@ -31,50 +31,42 @@ function saveGame(player) {
 }
 
 function loadGame() {
-    try {
-        const savedData = localStorage.getItem('playerData');
-        if (savedData) {
-            const parsedData = JSON.parse(savedData);
-            
-            const player = {
-                currencies: parsedData.currencies?.map(currency => ({
-                    name: currency.name || '',
-                    value: E(currency.value || 0),
-                    gain: currency.gain ? E(currency.gain) : undefined,
-                    multipliers: (currency.multipliers || []).map(m => E(m)),
-                    total: E(currency.total || 0)
-                })) || [],
-                rank: parsedData.rank || 0,
-                tier: parsedData.tier || 0,
-                achievements: parsedData.achievements || [],
-                infinity: {
-                    times: E(parsedData.infinity?.times || 0),
-                    points: E(parsedData.infinity?.points || 0),
-                    point_multi: (parsedData.infinity?.point_multi || []).map(m => E(m)),
-                    point_total: E(parsedData.infinity?.point_total || 0),
-                    limit: E(parsedData.infinity?.limit || 'e9e15'),
-                    limit_level: E(parsedData.infinity?.limit_level || 0),
-                    upgrades: parsedData.infinity?.upgrades || []
-                },
-            
-                options: {
-                    notation: parsedData.options?.notation || "sc",
-                    max_range: parsedData.options?.max_range || 6,
-                    confirmations: parsedData.options?.confirmations || {
-                        rank: true,
-                        tier: true,
-                        infinity: true
-                    }
-                }
-            };
-            
-            return addMissingDefaults(player);
-        }
-    } catch (error) {
-        console.error('Error loading save data:', error);
+    const savedData = localStorage.getItem('playerData');
+    if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        
+        const player = {
+            currencies: parsedData.currencies.map(currency => ({
+                name: currency.name,
+                value: E(currency.value),
+                gain: currency.gain ? E(currency.gain) : undefined,
+                multipliers: currency.multipliers.map(m => E(m)),
+                total: E(currency.total)
+            })),
+            rank: parsedData.rank,
+            tier: parsedData.tier,
+            achievements: parsedData.achievements,
+            infinity: {
+                times: E(parsedData.infinity.times),
+                points: E(parsedData.infinity.points),
+                point_multi: parsedData.infinity.point_multi.map(m => E(m)),
+                point_total: E(parsedData.infinity.point_total),
+                limit: E(parsedData.infinity.limit),
+                limit_level: E(parsedData.infinity.limit_level),
+                upgrades: parsedData.infinity.upgrades
+            },
+        
+            options: {
+                notation: parsedData.options.notation,
+                max_range: parsedData.options.max_range,
+                confirmations: parsedData.options.confirmations
+            }
+        };
+        
+        return addMissingDefaults(player);
     }
     
-    // If no saved data or error occurred, return the default player object
+    // If no saved data, return the default player object
     return getDefaultPlayer();
 }
 
@@ -83,18 +75,25 @@ function addMissingDefaults(currentPlayer) {
     
     // Recursive function to add missing properties
     function addMissingProps(current, defaultObj) {
+        if (typeof current !== 'object' || current === null || Array.isArray(current)) {
+            return defaultObj;
+        }
+
         for (const key in defaultObj) {
             if (!(key in current)) {
                 current[key] = defaultObj[key];
             } else if (typeof defaultObj[key] === 'object' && !Array.isArray(defaultObj[key])) {
-                addMissingProps(current[key], defaultObj[key]);
+                current[key] = addMissingProps(current[key], defaultObj[key]);
             }
         }
+
+        return current;
     }
     
-    addMissingProps(currentPlayer, defaultPlayer);
-    return currentPlayer;
+    return addMissingProps(currentPlayer, defaultPlayer);
 }
+
+
 
 function getDefaultPlayer() {
     return {
@@ -147,7 +146,8 @@ function getDefaultPlayer() {
             confirmations: {
                 rank: true,
                 tier: true,
-                infinity: true
+                infinity: true,
+                ticker: true
             }
         }
     };
@@ -199,7 +199,7 @@ function importSave() {
         
         // Add missing default values
         const defaultPlayer = getDefaultPlayer();
-        parsedSaveData = addMissingDefaults(parsedSaveData, defaultPlayer);
+        parsedSaveData = addMissingDefaults(parsedSaveData);
         
         // Save the updated data
         localStorage.setItem('playerData', JSON.stringify(parsedSaveData));
@@ -213,7 +213,6 @@ function importSave() {
         alert('Failed to import save data. Please ensure you\'ve entered the correct save string.');
     }
 }
-
 let player = loadGame();
 const FPS = 30;
 let buttons = [[], [], []];
@@ -346,3 +345,4 @@ function softcap(gain) {
  }
          
  } 
+
