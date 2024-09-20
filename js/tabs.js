@@ -23,52 +23,53 @@ function updateTabs() {
     }
     if (player.rank > 0) {
         el("rebirth").style.display = "block";
-     
+
     } else {
         el("rebirth").style.display = "none";
-       
-    } if (player.rank > 0 && !hasInfinityUpgrade(1)) {
-      
+
+    }
+    if (player.rank > 0 && !hasInfinityUpgrade(1)) {
+
         el("rebirth-buttons").style.display = "block";
     } else {
-        
+
         el("rebirth-buttons").style.display = "none";
     }
     if (player.rank > 2) {
         el("ultrarebirth").style.display = "block";
-       
+
     } else {
         el("ultrarebirth").style.display = "none";
-   
+
     }
     if (hasInfinityUpgrade(0)) {
         el("multiplier-buttons").style.display = "none";
     } else {
         el("multiplier-buttons").style.display = "block";
     }
- if (player.rank > 2 && !hasInfinityUpgrade(3)) {
-      
-    el("ultrarebirth-buttons").style.display = "block";
-} else {
-    
-    el("ultrarebirth-buttons").style.display = "none";
-}
-if (player.currencies[0].value.gte('e9e15') || player.infinity.times.gte(1)) {
-el('prestige-infinity').style.display = "block"
-} else {
-    el('prestige-infinity').style.display = "none"
-}
-if (player.infinity.times.gte(1)) {
-    el('infinity-tab-button').style.display = "block"
-    el("infinityconfirm").style.display = "block"
+    if (player.rank > 2 && !hasInfinityUpgrade(3)) {
+
+        el("ultrarebirth-buttons").style.display = "block";
+    } else {
+
+        el("ultrarebirth-buttons").style.display = "none";
+    }
+    if (player.currencies[0].value.gte('e9e15') || player.infinity.times.gte(1)) {
+        el('prestige-infinity').style.display = "block"
+    } else {
+        el('prestige-infinity').style.display = "none"
+    }
+    if (player.infinity.times.gte(1)) {
+        el('infinity-tab-button').style.display = "block"
+        el("infinityconfirm").style.display = "block"
     } else {
         el('infinity-tab-button').style.display = "none"
-         el("infinityconfirm").style.display = "none"
+        el("infinityconfirm").style.display = "none"
     }
     if (player.options.confirmations.ticker) {
-el('ticker-container').style.display = "block"
+        el('ticker-container').style.display = "block"
     } else {
-el('ticker-container').style.display = "none"
+        el('ticker-container').style.display = "none"
     }
 }
 setInterval(updateTabs, 50);

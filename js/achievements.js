@@ -114,7 +114,7 @@ let achievements = {
         id: "24",
         desc: "Upgrade to rank 6",
         check() {
-            return  player.rank > 5;
+            return player.rank > 5;
         }
     },
     13: {
@@ -132,7 +132,7 @@ let achievements = {
         id: "26",
         desc: "Upgrade to rank 7",
         check() {
-            return  player.rank > 6;
+            return player.rank > 6;
         }
     },
     15: {
@@ -141,7 +141,7 @@ let achievements = {
         id: "27",
         desc: "Upgrade to rank 8",
         check() {
-            return  player.rank > 7;
+            return player.rank > 7;
         }
     },
     16: {
@@ -150,7 +150,7 @@ let achievements = {
         id: "28",
         desc: "Upgrade to rank 9",
         check() {
-            return  player.rank > 8;
+            return player.rank > 8;
         }
     },
     17: {
@@ -168,7 +168,7 @@ let achievements = {
         id: "31",
         desc: "Upgrade to rank 10",
         check() {
-            return  player.rank > 9;
+            return player.rank > 9;
         }
     },
     19: {
@@ -177,7 +177,7 @@ let achievements = {
         id: "32",
         desc: "Upgrade to rank 11",
         check() {
-            return  player.rank > 10;
+            return player.rank > 10;
         }
     },
     20: {
@@ -195,7 +195,7 @@ let achievements = {
         id: "34",
         desc: "Upgrade to rank 12",
         check() {
-            return  player.rank > 11;
+            return player.rank > 11;
         }
     },
     22: {
@@ -204,7 +204,7 @@ let achievements = {
         id: "35",
         desc: "Upgrade to tier 1",
         check() {
-            return  player.tier > 0;
+            return player.tier > 0;
         }
     },
     23: {
@@ -222,7 +222,7 @@ let achievements = {
         id: "37",
         desc: "Upgrade to tier 2",
         check() {
-            return  player.tier > 1;
+            return player.tier > 1;
         }
     },
     25: {
@@ -240,7 +240,7 @@ let achievements = {
         id: "39",
         desc: "Upgrade to tier 3",
         check() {
-            return  player.tier > 2;
+            return player.tier > 2;
         }
     },
     27: {
@@ -249,7 +249,7 @@ let achievements = {
         id: "41",
         desc: "Upgrade to tier 4",
         check() {
-            return  player.tier > 3;
+            return player.tier > 3;
         }
     },
     28: {
@@ -258,7 +258,7 @@ let achievements = {
         id: "42",
         desc: "Get 1.00e3.000M cash",
         check() {
-            return  player.currencies[0].value.gte('1e3000003');
+            return player.currencies[0].value.gte('1e3000003');
         }
     },
     29: {
@@ -267,7 +267,7 @@ let achievements = {
         id: "43",
         desc: "Upgrade to tier 5",
         check() {
-            return  player.tier > 4;
+            return player.tier > 4;
         }
     },
     30: {
@@ -276,7 +276,7 @@ let achievements = {
         id: "44",
         desc: "Upgrade to tier 6",
         check() {
-            return  player.tier > 5;
+            return player.tier > 5;
         }
     },
     31: {
@@ -285,7 +285,7 @@ let achievements = {
         id: "45",
         desc: "Upgrade to tier 7",
         check() {
-            return  player.tier > 6;
+            return player.tier > 6;
         }
     },
     32: {
@@ -294,7 +294,7 @@ let achievements = {
         id: "46",
         desc: "Get e9e15 cash, Reward: 100,000x cash, and auto rank up!",
         check() {
-            return  player.currencies[0].value.gte('e9e15');
+            return player.currencies[0].value.gte('e9e15');
         }
     },
     33: {
@@ -303,7 +303,7 @@ let achievements = {
         id: "47",
         desc: "Infinity for the first time, Reward: 100,000x cash!",
         check() {
-            return  player.infinity.times.gte(1)
+            return player.infinity.times.gte(1)
         }
     },
     34: {
@@ -312,7 +312,7 @@ let achievements = {
         id: "48",
         desc: "Upgrade the infinity limit to level 1",
         check() {
-            return  player.infinity.limit_level.gte(1)
+            return player.infinity.limit_level.gte(1)
         }
     },
     35: {
@@ -368,10 +368,10 @@ function setupAchievements() {
         let button = document.createElement('button');
         button.classList.add("achievement", "auto-resize-button");
         button.innerText = achievements[i].name;
-        
+
         // Create tooltip
         button.title = achievements[i].desc;
-        
+
         let rowElement = document.getElementById("achievements" + achievements[i].row);
         if (rowElement) {
             rowElement.append(button);
