@@ -1,6 +1,6 @@
 p, h1, h2, .progress-text, a {
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif
+    font-family: Arial, Helvetica, sans-serif 
 }
 #maintitle {
     text-align: center;
@@ -16,7 +16,6 @@ p, h1, h2, .progress-text, a {
     border: darkred 3px solid;
     color: white;
     font-size: 10.5px;
-
 }
 #multiplier-button-cant {
     display: inline-block;
@@ -27,7 +26,6 @@ p, h1, h2, .progress-text, a {
     border: darkred 3px solid;
     color: white;
     font-size: 10.5px;
-
 }
 #rebirth-button {
     display: inline-block;
@@ -38,7 +36,6 @@ p, h1, h2, .progress-text, a {
     border: darkblue 3px solid;
     color: white;
     font-size: 10.5px;
- 
 }
 #rebirth-button-cant {
     display: inline-block;
@@ -76,9 +73,9 @@ p, h1, h2, .progress-text, a {
     height: 100px;
     border-radius: 50%;
     background-color: rgb(212, 0, 255);
-    border:  rgb(75, 0, 90) 3px solid;;
+    border: rgb(75, 0, 90) 3px solid;
+    ;
     color: white;
- 
 }
 #prestige-button-cant {
     display: inline-block;
@@ -86,16 +83,15 @@ p, h1, h2, .progress-text, a {
     height: 100px;
     border-radius: 50%;
     background-color: rgb(127, 0, 153);
-    border:  rgb(75, 0, 90) 3px solid;;
+    border: rgb(75, 0, 90) 3px solid;
+    ;
     color: white;
- 
 }
 button {
     display: inline-block;
     background-color: white;
-    /* White */
+   /* White */
     padding: 10px 20px;
-    
     border-radius: 5px;
     cursor: pointer;
 }
@@ -104,60 +100,47 @@ button {
     color: black;
 }
 #infinity-button, #infinity-button1, #infinity-button2, .infinity-button {
-
-    color: orange; /* White */
-   
+    color: orange;
+   /* White */
     border-color: orange;
-    
 }
 .infinity-button-bought {
-
-    color: darkorange; /* White */
-   
+    color: darkorange;
+   /* White */
     border-color: darkorange;
-    
 }
 #eternity-button {
-
-    color: purple; /* White */
-   
+    color: purple;
+   /* White */
     border-color: purple;
-    
 }
 #quantum-button {
-
-    color: green; /* White */
-   
+    color: green;
+   /* White */
     border-color: green;
-    
 }
 #reality-button {
-
-    color: blue; /* White */
-   
+    color: blue;
+   /* White */
     border-color: blue;
-    
 }
 #finality-button {
-
-    color: red; /* White */
-   
+    color: red;
+   /* White */
     border-color: red;
-    
 }
-
-
 #rank-button, #tier-button {
     display: inline-block;
     background-color: white;
-    color: black; /* White */
+    color: black;
+   /* White */
     padding: 20px 30px;
     border-color: black;
     border-radius: 5px;
     cursor: pointer;
 }
 .wipe {
-    color: white; 
+    color: white;
     background-color: red;
     border-color: darkred;
 }
@@ -165,10 +148,9 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Add space between flex items */
+    gap: 10px;
+   /* Add space between flex items */
 }
-
-
 .ticker-container {
     display: inline-block;
     background-color: white;
@@ -179,13 +161,9 @@ button {
     width: 100%;
 }
 html, body {
- 
-   
-        overflow-x: hidden;
-   color: black;
+    overflow-x: hidden;
+    color: black;
 }
-
-
 .ticker {
     white-space: nowrap;
     display: inline-block;
@@ -196,10 +174,10 @@ html, body {
 @keyframes ticker {
     0% {
         transform: translate(0, 0);
-    }
+   }
     100% {
         transform: translate(-100%, 0);
-    }
+   }
 }
 .progress-container {
     position: fixed;
@@ -235,61 +213,64 @@ text-style {
     color: white;
     pointer-events: none;
     &[text="cash"] {
-        color:  green;
-    };
+        color: green;
+   }
+    ;
     &[text="multiplier"] {
         color: red;
-    };
+   }
+    ;
     &[text="rebirth"] {
         color: rgb(0, 110, 255);
-    };
+   }
+    ;
     &[text="ultrarebirth"] {
         color: rgb(0, 28, 184);
-    };
+   }
+    ;
     &[text="prestige"] {
         color: rgb(212, 0, 255);
-    };
+   }
+    ;
     &[text="ultraprestige"] {
-        color:rgb(255, 196, 0);
-    };
+        color: rgb(255, 196, 0);
+   }
+    ;
     &[text="infinity"] {
         background: radial-gradient(circle, orange 0%, darkorange 100%);
         filter: drop-shadow(1px 1px black) drop-shadow(0px 0px 1px black);
         text-shadow: none;
-       -webkit-background-clip: text;
+        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-
-     
-    };
+   }
+    ;
 }
 @supports (-webkit-background-clip: text) and (-webkit-text-fill-color: transparent) {
-    &[text="core"],
-    &[text="humanoid"],
-    &[text="black-hole"],
-    &[text="ascension"] {
+    &[text="core"], &[text="humanoid"], &[text="black-hole"], &[text="ascension"] {
         filter: drop-shadow(1px 1px black) drop-shadow(0px 0px 1px black);
         text-shadow: none;
-    };
-
+   }
+    ;
     &[text="core"] {
         background: radial-gradient(circle, #feff00 0%, #ff5500 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    };
+   }
+    ;
     &[text="humanoid"] {
         background: linear-gradient(#003001, #00FF03, #003001);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    };
+   }
+    ;
     &[text="black-hole"] {
         background: linear-gradient(magenta, purple, #303, purple, magenta);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    };
-   
-};
-
-
+   }
+    ;
+}
+;
 .achievements {
     display: flex;
     flex-direction: column;
@@ -299,7 +280,6 @@ text-style {
     margin: 0 auto;
     padding: 20px;
 }
-
 .achievement-row {
     display: flex;
     flex-direction: row;
@@ -308,7 +288,6 @@ text-style {
     gap: 10px, 10px;
     width: 100%;
 }
-
 .achievement, .achievement-got {
     width: 100px;
     height: 100px;
@@ -322,27 +301,23 @@ text-style {
     padding: 5px;
     box-sizing: border-box;
 }
-
 .achievement {
     background-color: #e0e0e0;
     color: #333;
 }
-
 .achievement-got {
     background-color: #4CAF50;
     color: white;
 }
-
 .achievement:hover, .achievement-got:hover {
     transform: scale(1.05);
 }
-
 @media (max-width: 768px) {
     .achievement-row {
         justify-content: flex-start;
         overflow-x: auto;
         padding-bottom: 10px;
-    }
+   }
 }
 :root {
     --bg-color: white;
@@ -356,7 +331,6 @@ text-style {
     --progress-bg: #6d4444;
     --progress-bar-bg: #4CAF50;
 }
-
 .dark-mode {
     --bg-color: #121212;
     --text-color: #e0e0e0;
@@ -369,50 +343,41 @@ text-style {
     --progress-bg: #4a3636;
     --progress-bar-bg: #388e3c;
 }
-
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
-
 p, h1, h2, .progress-text {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--text-color);
 }
-
 #maintitle {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: var(--text-color);
 }
-
 button, #rank-button, #tier-button, #normal-button {
     background-color: var(--button-bg);
     color: var(--button-text);
     border-color: var(--text-color);
 }
-
 .ticker-container {
     background-color: var(--button-bg);
     color: var(--button-text);
     border-color: var(--text-color);
 }
-
 .progress-container {
     background-color: var(--progress-bg);
 }
-
 .progress-bar {
     background-color: var(--progress-bar-bg);
 }
-
 .achievement {
     background-color: var(--achievement-bg);
     color: var(--achievement-text);
 }
-
 .achievement-got {
     background-color: var(--achievement-got-bg);
     color: var(--achievement-got-text);
