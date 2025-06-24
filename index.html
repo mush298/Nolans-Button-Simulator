@@ -1,0 +1,114 @@
+<html lang = "en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nolan's Button Simulator</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/text-style.css">
+
+    <script src="js/comp/break_eternity.js"></script>
+    <script src="js/scalings.js"></script>
+    <script src="js/currency.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/element.js"></script>
+    <script src="js/format.js"></script>
+    <script src="js/resets.js"></script>
+    <script src="js/options.js"></script>
+    <script src="js/ranks.js"></script>
+    <script src="js/buttons.js"></script>
+
+    <script src="js/ascension.js"></script>
+    <script src="js/comp/popup.js"></script>
+
+    <script src="js/languages/language.js"></script>
+    <script src="js/languages/lang-en.js"></script>
+
+    <script src="js/tab.js"></script>
+    <script src="js/comp/data.js"></script>
+    
+    <body onload = "loadGame()">
+
+
+        <div id = "currs-top"></div>
+
+
+        <p id = "cash-amount"></p>
+
+        <div class = "main-line"></div>
+
+        <div id="tabs"></div>
+
+        <div id = "main-tab">
+
+            <div id = "ranks"></div>
+
+            <div id = "buttons"></div>
+
+        </div>
+
+         <div id = "ascension-power-tab">
+
+            <p id = "ap-amount"></p>
+            <p id = "total-ap"></p>
+
+            <div id = "ascension-upgrades"></div>
+
+         </div>
+
+         <div id = "ascension-milestones-tab">
+
+            <br>
+
+            <div id = "ascension-milestones">
+
+            </div>
+
+         </div>
+
+         <div id="scalings-tab">
+            <subtitle id="scaling-info">Scalings will be added as soon as you reach them.</subtitle>
+            <table align="center" id="scalings-table"></table>
+        </div>
+
+        <div id = "options-main-tab"></div>
+
+        <div id = "format-tab">
+            <br>
+            <h2>Notations</h2>
+            <br>
+            <button class = "option" onclick = "player.options.notation = 'sc' ">Scientific</button>
+            <button class = "option" onclick = "player.options.notation = 'st' ">Standard</button>
+            <button class = "option" onclick = "player.options.notation = 'mixed_sc' ">Mixed Sci</button>
+            <br>
+            <h2>Max Range</h2>
+            <br>
+            <button class = "option" onclick = "player.options.max_range = 3 ">3</button>
+            <button class = "option" onclick = "player.options.max_range = 6 ">6</button>
+            <button class = "option" onclick = "player.options.max_range = 9 ">9</button>
+            <button class = "option" onclick = "player.options.max_range = 12 ">12</button>
+            <button class = "option" onclick = "player.options.max_range = 15 ">15</button>
+        </div>
+
+        <div id = "saving-tab">
+            <br>
+            <button class = "option" onclick = "save()">Save</button>
+            <button class = "option" onclick = "export_copy()">Export to clipboard</button>
+            <button class = "option" onclick = "importy()">Import from text</button>
+             <button class = "option wipe" onclick = "wipeConfirm()">WIPE</button>
+        </div>
+
+         <div id="popup">
+            <div id="popup-ctn">
+                <div id="popup-html"></div>
+                <div id="popup-btns"></div>
+            </div>
+        </div>
+        
+       
+
+
+    </body>
+
+    <input id="copy" type="text" style="position: absolute; left: -9999px;" />
+</html>
