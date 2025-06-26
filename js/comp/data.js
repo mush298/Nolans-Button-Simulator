@@ -67,12 +67,18 @@ function wipe(reload,start) {
     }
 }
 
-function loadPlayer(load) {
-    const DATA = getPlayerData()
-    player = deepNaN(load, DATA)
-    player = deepUndefinedAndDecimal(player, DATA)
-
-    checkVersion()
+function load(x){
+    if(typeof x == "string" && x != ''){
+        try {
+            let parsed = JSON.parse(atob(x));
+            loadPlayer(parsed);
+        } catch (error) {
+            console.error("Error parsing save data:", error);
+            wipe(false,true);
+        }
+    } else {
+        wipe(false,true)
+    }
 }
 
 function checkVersion() {
@@ -130,14 +136,6 @@ function save(auto=false) {
     prevSave = str
 }
 
-function load(x){
-    if(typeof x == "string" && x != ''){
-        loadPlayer(JSON.parse(atob(x)))
-    } else {
-        wipe(false,true)
-    }
-}
-
 function exporty() {
     let str = btoa(JSON.stringify(player))
     save();
@@ -164,17 +162,27 @@ function export_copy() {
 
 function importy() {
     createPromptPopup(lang_text('popup-desc').import, loadgame=>{
-        if (loadgame != null) {
+        if (loadgame != null && loadgame.trim() !== "") {
             let keep = player
             try {
                 if (findNaN(loadgame, true)) {
-                    error("Error Importing, because it got NaNed")
+                    console.error("Error Importing, because it got NaNed")
+                    alert("Error Importing: Save data contains invalid numbers")
                     return
                 }
+                
+                // Load the save data directly instead of reloading the page
                 localStorage.setItem(SAVE_ID, loadgame)
-                location.reload()
+                load(loadgame) // Load the imported data directly
+                
+                // Refresh the UI to show the new data
+                updateHTML()
+                
+                alert("Import successful!");
+                
             } catch (error) {
-                error("Error Importing")
+                console.error("Error Importing:", error)
+                alert("Error Importing: Invalid save data format")
                 player = keep
             }
         }
@@ -190,7 +198,8 @@ function importy_file() {
         fr.onload = () => {
             let loadgame = fr.result
             if (findNaN(loadgame, true)) {
-				error("Error Importing, because it got NaNed")
+				console.error("Error Importing, because it got NaNed")
+				alert("Error Importing: Save file contains invalid numbers")
 				return
 			}
             localStorage.setItem(SAVE_ID, loadgame)
@@ -209,8 +218,8 @@ function wipeConfirm() {
 function checkNaN() {
     let naned = findNaN(player)
     if (naned) {
-        warn("Game Data got NaNed because of "+naned.bold())
-        resetTemp()
+        console.warn("Game Data got NaNed because of " + naned)
+        alert("Game Data got corrupted: " + naned)
         loadGame(false, true)
         tmp.start = 1
         tmp.pass = 1
@@ -236,4 +245,11 @@ function findNaN(obj, str=false, data=getPlayerData(), node='player') {
         }
     }
     return false
+}
+
+function loadPlayer(load) {
+    const DATA = getPlayerData()
+    player = deepNaN(load, DATA)
+    player = deepUndefinedAndDecimal(player, DATA)
+    checkVersion()
 }
