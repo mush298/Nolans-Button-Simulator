@@ -1,5 +1,7 @@
 const el = id => document.getElementById(id);
 const FPS = 30;
+const SAVE_INTERVAL = 10; // Save every 10 seconds instead of every frame
+let saveTimer = 0;
 
 function toTextStyle(text,style="",id) { return `<text-style text="${style}" ${id ? `id="${id}"` : ""}>${text}</text-style>` }
 function toColoredText(text,color="") { return `<text-style style="color:${color}">${text}</text-style>` }
@@ -31,7 +33,14 @@ function loop() {
     if (player.ranks.tier.gte(4) || player.ascension.ascensions.gte(1)) player.ranks.rank = RANKS["rank"].bulk(player.cash).max(player.ranks.rank)
 
     if (player.ranks.tetr.gte(3) || player.ascension.ascensions.gte(3)) player.ranks.tier = RANKS["tier"].bulk(player.ranks.rank).max(player.ranks.tier)
-    save()
+    
+    // Only save every SAVE_INTERVAL seconds instead of every frame
+    // Also wait 5 seconds after game load to avoid overwriting imported saves
+    saveTimer += 1/FPS;
+    if (saveTimer >= SAVE_INTERVAL && (Date.now() - gameLoadTime) > 5000) {
+        save()
+        saveTimer = 0;
+    }
 
     options.notation = player.options.notation
 
@@ -51,7 +60,11 @@ for (let x in SCALINGS) {
         }
     }
 
+let gameLoadTime = Date.now();
+
 function loadGame() {
+    gameLoadTime = Date.now(); // Reset the load time
+    
     prevSave = localStorage.getItem(SAVE_ID)
         
     load(prevSave)
@@ -63,6 +76,24 @@ function loadGame() {
     setupHTML()
 
     setInterval(loop, 1000/FPS)
+    
+    // Add event listener to save when page is closing
+    window.addEventListener('beforeunload', function() {
+        save();
+    });
+    
+    // Also save on visibility change (when switching tabs)
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            save();
+        }
+    });
+}
+
+// Add manual save trigger function
+function forceSave() {
+    save();
+    saveTimer = 0; // Reset the timer
 }
 
 const TOP_CURR = [
